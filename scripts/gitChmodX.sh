@@ -3,6 +3,7 @@
 for f in `find . -type f| grep -v '\\.git\/' | grep '\\.sh$'`; do echo "gitchmoding: $f" && git update-index --chmod=+x $f; done
 
 customFiles=" \
+activator
 "
 
 for f in $customFiles; do echo "gitchmoding: $f" && git update-index --chmod=+x $f; done
