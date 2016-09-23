@@ -1,5 +1,5 @@
+import sbt.Keys._
 import sbt._
-import Keys._
 
 object Common {
   val appVersion = "0.1-SNAPSHOT"
@@ -8,6 +8,7 @@ object Common {
     version := appVersion,
     scalaVersion := "2.11.8",
     organization := "jawp",
-    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-encoding", "utf8")
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-encoding", "utf8"),
+    testOptions in Test += Tests.Argument("-oD", "-F", "10")   //org.scalatest.tools.Runner - description of options
   )
 }
