@@ -8,6 +8,6 @@ object Common {
     version := appVersion,
     scalaVersion := "2.11.8",
     organization := "jawp",
-    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-encoding", "utf8")
   )
 }
