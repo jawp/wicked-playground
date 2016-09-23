@@ -24,6 +24,7 @@ lazy val `server` = project.in(file("modules/server"))
   .settings(libraryDependencies ++= Seq(
     `akka-http-experimental`,
     cats,
+    scalaz,
     `akka-slf4j`,
     `logback-classick`,
     `json4s-jackson`,
