@@ -9,6 +9,7 @@ import scalaz.syntax.id._
 
 class StreamsQuickStartGuide extends WickedSpec {
 
+  //based on http://doc.akka.io/docs/akka/2.4.10/scala/stream/stream-quickstart.html#stream-quickstart-scala
 
   import akka.stream._
   import akka.stream.scaladsl._
@@ -80,6 +81,7 @@ class StreamsQuickStartGuide extends WickedSpec {
     result.futureValue.status.success.value mustBe Done
   }
 
+  //tbc ...
 }
 
 
