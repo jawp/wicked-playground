@@ -29,6 +29,8 @@ lazy val `server` = project.in(file("modules/server"))
     `logback-classick`,
     `json4s-jackson`,
     `json4s-ext`,
+    upicle,
+    `akka-http-circe`,
     scalaTest % Test
   ))
   .dependsOn(`core`)

@@ -1,14 +1,18 @@
 package wp
 
+import java.util.concurrent.Executors
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshalling.{Marshaller, ToEntityMarshaller}
-import akka.http.scaladsl.model.MediaTypes
+import akka.http.scaladsl.model.{MediaTypes, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
+import org.json4s.{DefaultFormats, jackson}
 import wp.model._
 
+import scala.concurrent.{ExecutionContext, Future}
 import scala.io.StdIn
 
 object ServerMain extends App {
@@ -49,6 +53,28 @@ object ServerMain extends App {
       //In case if you don't want to use predefined marshaller provide your own implicit
       implicit val marshaller: ToEntityMarshaller[String] = Marshaller.stringMarshaller(MediaTypes.`text/html`)
       complete("<html><head></head><body><h1>World</h1><p>And this is html</p></body></html>")
+    } ~ pathPrefix("upickle-pigeon" / IntNumber) { id =>
+
+      //http://localhost:8080/upickle-pigeon/1
+      //http://localhost:8080/upickle-pigeon/10
+
+      val pigeon = Service.getPigeon(id)
+      import de.heikoseeberger.akkahttpupickle.UpickleSupport._
+      onSuccess(pigeon) {
+        case Some(p) => complete(p)
+        case None => complete(StatusCodes.NotFound)
+      }
+    } ~ pathPrefix("json4s-pigeon" / IntNumber) { id =>
+      //http://localhost:8080/json4s-pigeon/1
+      //http://localhost:8080/json4s-pigeon/10
+      val pigeon = Service.getPigeon(id)
+      implicit val serialization = jackson.Serialization // or native.Serialization
+      implicit val formats = DefaultFormats
+      import de.heikoseeberger.akkahttpjson4s.Json4sSupport._
+      onSuccess(pigeon) {
+        case Some(p) => complete(p)
+        case None => complete(StatusCodes.NotFound)
+      }
     }
 
   val bindingFuture = Http().bindAndHandle(routes, "localhost", 8080)
@@ -61,7 +87,17 @@ object ServerMain extends App {
     .onComplete(_ => system.terminate()) // and shutdown when done
 }
 
+object Service {
+
+  private implicit val servicePool: ExecutionContext = ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(1))
+
+  def getPigeon(id: PigeonId): Future[Option[Pigeon]] = Future {
+    DB.pigeons.get(id)
+  }
+}
+
 object DB {
+
   val pigeons = Map[PigeonId, Pigeon](
     1 -> Pigeon(1, "Smarty"),
     2 -> Pigeon(23, "Lucy"),
