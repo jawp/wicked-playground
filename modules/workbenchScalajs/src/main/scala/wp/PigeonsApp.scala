@@ -4,6 +4,7 @@ import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom
 import org.scalajs.dom.html
 import org.scalajs.dom.html.{Div, LI, UList}
+import org.scalajs.dom.raw.Element
 
 import scalatags.JsDom.TypedTag
 import scalatags.JsDom.all._
@@ -52,12 +53,15 @@ object PigeonsApp {
         DB.removePigeon()
         renderPigeons(pigeonDiv)
       },
-      "kill pigeon"
+      "kill pigeon",
+      id := "killPigeonButton"
     ).render
 
     renderPigeons(pigeonDiv)
 
     mainDiv.appendChild(killPigeonButton)
+
+    dom.window.setInterval(() => blink("killPigeonButton"), 200)
   }
 
   def renderPigeons(pigeonDiv: Div) = {
@@ -68,5 +72,20 @@ object PigeonsApp {
     pigeonDiv.innerHTML = ""
     pigeonDiv.appendChild(pigeonsList)
     pigeonDiv.appendChild(pigeonsList)
+  }
+
+  val animatinStyles = List("style1", "style2")
+  var styleIndex = 0
+
+
+  def blink(target: dom.Element): Unit = {
+    styleIndex = (styleIndex  + 1) % animatinStyles.size
+    val style: String = animatinStyles(styleIndex)
+    target.setAttribute("class", style)
+    dom.console.log(s"changed style to $style")
+  }
+
+  implicit class StringOps(val s: String) extends AnyVal {
+    def idElement: dom.Element = dom.document.getElementById(s)
   }
 }
