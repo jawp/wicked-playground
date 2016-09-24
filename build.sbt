@@ -34,3 +34,22 @@ lazy val server = project.in(file("modules/server"))
     scalaTest % Test
   ))
   .dependsOn(core)
+
+
+import com.lihaoyi.workbench.Plugin._
+
+lazy val workbenchScalajs = project.in(file("modules/workbenchScalajs"))
+  .settings(Common.settings)
+  .settings(libraryDependencies ++= Seq(
+    "com.lihaoyi" %%% "scalatags" % scalaTagsVersion,
+    "com.lihaoyi" %%% "scalarx" % scalaRxVersion,
+    "be.doeraene" %%% "scalajs-jquery" % doeraeneScalajsJQueryVersion,
+    "org.scala-js" %%% "scalajs-dom" % scalajsDomVersion
+  ))
+  .enablePlugins(org.scalajs.sbtplugin.ScalaJSPlugin)
+  .settings(workbenchSettings)
+  .settings(
+    refreshBrowsers <<= refreshBrowsers.triggeredBy(fastOptJS in Compile),
+    bootSnippet := "wp.WorkbenchApp().main(document.getElementById('mainDiv'));"
+  )
+  .dependsOn(core)
