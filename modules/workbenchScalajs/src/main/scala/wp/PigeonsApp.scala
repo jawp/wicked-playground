@@ -61,7 +61,7 @@ object PigeonsApp {
 
     mainDiv.appendChild(killPigeonButton)
 
-    dom.window.setInterval(() => blink("killPigeonButton"), 200)
+    dom.window.setInterval(() => blink(dom.document.getElementById("killPigeonButton")), 200)
   }
 
   def renderPigeons(pigeonDiv: Div) = {
@@ -85,7 +85,4 @@ object PigeonsApp {
     dom.console.log(s"changed style to $style")
   }
 
-  implicit class StringOps(val s: String) extends AnyVal {
-    def idElement: dom.Element = dom.document.getElementById(s)
-  }
 }
