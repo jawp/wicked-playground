@@ -4,7 +4,7 @@ import Dependencies._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
-  .aggregate(core, clapi, server, workbenchScalajs)
+  .aggregate(core, clapi, server, workbenchScalajs, testGoodies)
 
 lazy val core = project.in(file("modules/core"))
   .settings(Common.settings)
@@ -17,7 +17,14 @@ lazy val clapi = project.in(file("modules/clapi"))
     `json4s-ext`,
     scalaTest % Test
   ))
-  .dependsOn(core)
+  .dependsOn(core, testGoodies % "test->test")
+
+lazy val testGoodies = project.in(file("modules/testGoodies"))
+  .settings(Common.settings)
+  .settings(libraryDependencies ++= Seq(
+    scalaTest % Test,
+    scalaCheck % Test
+  ))
 
 lazy val server = project.in(file("modules/server"))
   .settings(Common.settings)
@@ -33,7 +40,7 @@ lazy val server = project.in(file("modules/server"))
     `akka-http-circe`,
     scalaTest % Test
   ))
-  .dependsOn(core)
+  .dependsOn(core, testGoodies % "test->test")
 
 
 import com.lihaoyi.workbench.Plugin._
@@ -44,7 +51,8 @@ lazy val workbenchScalajs = project.in(file("modules/workbenchScalajs"))
     "com.lihaoyi" %%% "scalatags" % scalaTagsVersion,
     "com.lihaoyi" %%% "scalarx" % scalaRxVersion,
     "be.doeraene" %%% "scalajs-jquery" % doeraeneScalajsJQueryVersion,
-    "org.scala-js" %%% "scalajs-dom" % scalajsDomVersion
+    "org.scala-js" %%% "scalajs-dom" % scalajsDomVersion,
+    scalaTest % Test
   ))
   .enablePlugins(org.scalajs.sbtplugin.ScalaJSPlugin)
   .settings(workbenchSettings)
@@ -52,4 +60,4 @@ lazy val workbenchScalajs = project.in(file("modules/workbenchScalajs"))
     refreshBrowsers <<= refreshBrowsers.triggeredBy(fastOptJS in Compile),
     bootSnippet := "wp.WorkbenchApp().main(document.getElementById('mainDiv'));"
   )
-  .dependsOn(core)
+  .dependsOn(core, testGoodies % "test->test")
