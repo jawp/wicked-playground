@@ -54,6 +54,9 @@ object Dependencies {
   val `json4s-ext` = "org.json4s" %% "json4s-ext" % json4sVersion
   val `nscala-time` = "com.github.nscala-time" %% "nscala-time" % nScalaTimeVersion
 
+  val scalatags = "com.lihaoyi" %% "scalatags" % scalaTagsVersion
+  val scalarx = "com.lihaoyi" %% "scalarx" % scalaRxVersion
+
   //  val `scalajs-dom` = "org.scala-js"                            %%% "scalajs-dom"     % scalajsDomVersion
   //  val scalatags = "com.lihaoyi"                             %%% "scalatags"       % scalaTagsVersion
   //  val scalarx = "com.lihaoyi"                             %%% "scalarx"         % scalaRxVersion
