@@ -20,7 +20,7 @@ object Dependencies {
   val webJarsJQueryVersion = "2.2.2"
   val webJarsFontAwesomeVersion = "4.5.0"
   val scalajsDomVersion = "0.9.0"
-  val scalaTagsVersion = "0.5.4"
+  val scalaTagsVersion = "0.6.0" //https://repo1.maven.org/maven2/com/lihaoyi/scalatags_sjs0.6_2.11/
   val scalaRxVersion = "0.3.1"
   val doeraeneScalajsJQueryVersion = "0.9.0"
   val breezeVersion = "0.12"
