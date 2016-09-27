@@ -1,17 +1,27 @@
 package wp.pigeonapp2
+import rx.Rx.Dynamic
+import rx._
 
 object Model {
+
+  type Store = Map[PigeonId, Pigeon]
 
   case class Pigeon(name: String, age: Int, status: Status)
   type PigeonId = Int
 
-  var pigeons = Map[PigeonId, Pigeon](
-    1 -> Pigeon("Lucy", 1, Landing),
-    2 -> Pigeon("Bob", 2, Flying(Shitting)),
-    3 -> Pigeon("Carmen", 2, Starting),
-    4 -> Pigeon("Graham", 2, Standing(Pecking)),
-    5 -> Pigeon("All", 2, Landing)
-  )
+  def update(f: Store => Store) = {
+    pigeons() = f(pigeons.now)
+  }
+
+  val pigeons: Var[Store] = Var {
+    Map[PigeonId, Pigeon](
+      1 -> Pigeon("Lucy", 1, Landing),
+      2 -> Pigeon("Bob", 2, Flying(Shitting)),
+      3 -> Pigeon("Carmen", 2, Starting),
+      4 -> Pigeon("Graham", 2, Standing(Pecking)),
+      5 -> Pigeon("All", 2, Landing)
+    )
+  }
 
   def generatePigeons: Seq[Pigeon] ={
     val names = List("Blake", "Krystle", "Carmen", "Alexis", "Fallon", "Steven", "Adam", "Amanda", "Jeffrey", "Claudia", "Dominique", "Farnsworth")
@@ -25,20 +35,30 @@ object Model {
     } yield Pigeon(s"$name $lastNames", age, status)
   }
 
-  def nextId(): PigeonId = pigeons.keySet.max + 1
+  val nextId: Rx[PigeonId] = pigeons.map(_.keySet.max + 1)
 
-  def addPigeons(pigs: Pigeon*): Seq[PigeonId] = pigs.map{ p =>
-    val id = nextId()
-    pigeons  = pigeons + (id -> p)
+  def addPigeon(p: Pigeon): PigeonId = {
+    val id = nextId.now
+    update(_ + (id -> p))
     id
   }
 
-  def removePigeon(): Unit = {
-    pigeons = pigeons.tail
+  def addPigeons(pigs: Pigeon*): Seq[PigeonId] = pigs.map(addPigeon)
+
+  def removePigeon(): Option[(PigeonId, Pigeon)] = {
+    val deleted: Option[(PigeonId, Pigeon)] = pigeons.now.headOption
+    update(_.tail)
+    deleted
   }
 
-  def removePigeon(id: PigeonId) = {
-    pigeons = pigeons -  id
+  def removePigeon(id: PigeonId): Option[(PigeonId, Pigeon)] = {
+    val deleted = pigeons.now.get(id).map(p => (id, p))
+    update(_ - id)
+    deleted
+  }
+
+  def updatePigeon(id: PigeonId, f: Pigeon => Pigeon): Unit = update { ps =>
+    ps.get(id).map(f).map(p => ps.updated(id, p)).getOrElse(ps)
   }
 
   sealed trait Status
