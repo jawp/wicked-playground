@@ -2,8 +2,7 @@ package wp.pigeonapp1
 
 import org.scalajs.dom.html
 import org.scalajs.dom.html.{Div, UList}
-import wp.PigeonModel
-import wp.PigeonModel.{Pigeon, _}
+import PigeonModel._
 
 import scalatags.JsDom.all._
 

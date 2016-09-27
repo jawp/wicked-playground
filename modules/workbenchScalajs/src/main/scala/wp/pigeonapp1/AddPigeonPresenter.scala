@@ -1,8 +1,7 @@
 package wp.pigeonapp1
 
 import org.scalajs.dom.html
-import wp.PigeonModel
-import wp.PigeonModel._
+import PigeonModel._
 
 import scala.util.Try
 import scalatags.JsDom.all._

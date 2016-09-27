@@ -1,5 +1,4 @@
-package wp
-
+package wp.pigeonapp1
 
 object PigeonModel {
 
