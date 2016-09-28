@@ -52,8 +52,14 @@ lazy val workbenchScalajs = project.in(file("modules/workbenchScalajs"))
     "com.lihaoyi" %%% "scalarx" % scalaRxVersion,
     "be.doeraene" %%% "scalajs-jquery" % doeraeneScalajsJQueryVersion,
     "org.scala-js" %%% "scalajs-dom" % scalajsDomVersion,
-    scalaTest % Test
+    scalaTest % Test,
+    "com.lihaoyi" %%% "utest" % uTestVersion
   ))
+  .settings(
+    testFrameworks += new TestFramework("utest.runner.Framework"),
+    jsDependencies += RuntimeDOM
+//    ,scalaJSUseRhino in Global := false
+  )
   .enablePlugins(org.scalajs.sbtplugin.ScalaJSPlugin)
   .settings(workbenchSettings)
   .settings(

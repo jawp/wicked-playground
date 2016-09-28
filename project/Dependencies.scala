@@ -22,6 +22,7 @@ object Dependencies {
   val scalajsDomVersion = "0.9.0"
   val scalaTagsVersion = "0.6.0" //https://repo1.maven.org/maven2/com/lihaoyi/scalatags_sjs0.6_2.11/
   val scalaRxVersion = "0.3.1"
+  val uTestVersion = "0.4.3"
   val doeraeneScalajsJQueryVersion = "0.9.0"
   val breezeVersion = "0.12"
   val spireVersion = "0.11.0"
@@ -57,6 +58,7 @@ object Dependencies {
   val scalatags = "com.lihaoyi" %% "scalatags" % scalaTagsVersion
   val scalarx = "com.lihaoyi" %% "scalarx" % scalaRxVersion
 
+//  val utest = "com.lihaoyi" %%% "utest" % uTestVersion
   //  val `scalajs-dom` = "org.scala-js"                            %%% "scalajs-dom"     % scalajsDomVersion
   //  val scalatags = "com.lihaoyi"                             %%% "scalatags"       % scalaTagsVersion
   //  val scalarx = "com.lihaoyi"                             %%% "scalarx"         % scalaRxVersion
