@@ -1,3 +1,6 @@
+- test for framework.Framework
+- bindElement - a concurent thingy to bindNode
+- special implicit which will tell what kind of container to use in Framework.RxFrag (span for tables is not the best choice)
 - akka-http hello world - respond with a string
 - json4s instead sprayjson
 - akka-http hello json - respond with json

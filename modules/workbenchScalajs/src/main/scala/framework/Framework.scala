@@ -19,9 +19,9 @@ trait Framework {
     * Sticks some Rx into a Scalatags fragment, which means hooking up an Obs
     * to propagate changes into the DOM.
     */
-  implicit def RxFrag[T](n: Rx[T])(implicit f: T => Frag, ctx: Ctx.Owner): Frag = {
+  implicit def RxFrag[T](rxt: Rx[T])(implicit f: T => Frag, ctx: Ctx.Owner): Frag = {
 
-    def fSafe: Frag = n match {
+    def now(): Node = rxt match {
       case r: Rx.Dynamic[T] => r.toTry match {
         case Success(v) => v.render
         case Failure(e) => span(e.getMessage, backgroundColor := "red").render
@@ -29,15 +29,13 @@ trait Framework {
       case v: Var[T] => v.now.render
     }
 
-    var last = fSafe.render
-    val container = span(Framework.`scala-rx`)(last).render
+    val container = span(Framework.`scala-rx`)(now()).render
 
-    n.triggerLater {
-      val newLast = fSafe.render
+    rxt.triggerLater {
       //Rx[Seq[T]] can generate multiple children per propagate, so use clearChildren instead of replaceChild
-      replaceChildrenWith(container, newLast)
-      last = newLast
+      replaceChildrenWith(container, now())
     }
+
     bindNode(container)
   }
 
