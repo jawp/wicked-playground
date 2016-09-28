@@ -2,6 +2,7 @@ package wp
 
 import rx._
 import rx.Ctx.Owner
+import rx.Rx.Dynamic
 
 import scala.collection.mutable
 import scala.util.{Failure, Success}
@@ -140,7 +141,10 @@ class ScalaRxDemo extends WickedSpec {
     xA() = 10
     xA.now mustBe 10
     log mustBe mList('xAChanged)  //outer RX is not fired
-    xs.now.map(_.now) mustBe mList(11,2) //but inner Var have been changed
+    xs.now.map(_.now) mustBe List(11,2) //but inner Var have been changed
+    xs() = xs.now :+ xA.map(_ + 10)
+    log mustBe mList('xAChanged, 'xsChanged)
+    xs.now.map(_.now) mustBe List(11,2,20)
   }
 
 }
