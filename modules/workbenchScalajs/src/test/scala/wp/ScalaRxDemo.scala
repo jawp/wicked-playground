@@ -1,11 +1,9 @@
 package wp
 
-import rx._
 import rx.Ctx.Owner
-import rx.Rx.Dynamic
+import rx._
 
 import scala.collection.mutable
-import scala.util.{Failure, Success}
 
 class ScalaRxDemo extends WickedSpec {
 
@@ -70,8 +68,7 @@ class ScalaRxDemo extends WickedSpec {
     }
   }
 
-  import mutable.{MutableList => mList}
-  import mutable.{Map => mMap}
+  import mutable.{Map => mMap, MutableList => mList}
 
   "simple Rx" in {
     import Ctx.Owner.Unsafe._
@@ -174,7 +171,21 @@ class ScalaRxDemo extends WickedSpec {
     }
 
     new Test()
+  }
 
+  "will they leak" in {
+    implicit val ctx: Ctx.Owner = Ctx.Owner.safe()
+
+    def createRx(rx: Rx[Int]) = Rx{ rx() + 1 }
+
+    val rInt = Var(1)
+    rInt.Internal.downStream.size mustBe 0
+
+    (0 to 100) foreach (_ => createRx(rInt))
+
+    rInt.Internal.downStream.size mustBe 101 // shouldn't it be 0 ?
+    rInt.kill()
+    rInt.Internal.downStream.size mustBe 0
   }
 
 }
