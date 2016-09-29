@@ -149,7 +149,9 @@ class ScalaRxDemo extends WickedSpec {
 
   "Rx is still leaking" in {
 
-    class Test(implicit ctx: Ctx.Owner) {
+    class Test {
+      implicit val ctx: Ctx.Owner = Ctx.Owner.safe()
+
       var count = 0
       val a = Var(1); val b = Var(2)
 
@@ -171,7 +173,6 @@ class ScalaRxDemo extends WickedSpec {
       (c.now, count) mustBe (104,211) withClue "still leaky rx -- 211!!"
     }
 
-    import rx.Ctx.Owner.Unsafe._
     new Test()
 
   }
