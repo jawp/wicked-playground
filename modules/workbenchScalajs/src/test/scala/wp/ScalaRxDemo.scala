@@ -147,4 +147,33 @@ class ScalaRxDemo extends WickedSpec {
     xs.now.map(_.now) mustBe List(11,2,20)
   }
 
+  "Rx is still leaking" in {
+
+    class Test(implicit ctx: Ctx.Owner) {
+      var count = 0
+      val a = Var(1); val b = Var(2)
+
+      def mkRx(i: Int) = Rx { count += 1; i + b() }
+      val c = Rx {
+        val newRx = mkRx(a())
+        newRx()
+      }
+      println(c.now, count)
+      a() = 4
+      println(c.now, count)
+      b() = 3
+      println(c.now, count) //(7,5) -- 5??
+
+      (0 to 100).foreach { i => a() = i }
+      println(c.now, count)
+      b() = 4
+      println(c.now, count)
+      (c.now, count) mustBe (104,211) withClue "still leaky rx -- 211!!"
+    }
+
+    import rx.Ctx.Owner.Unsafe._
+    new Test()
+
+  }
+
 }
