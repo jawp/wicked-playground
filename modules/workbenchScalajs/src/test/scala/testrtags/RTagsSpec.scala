@@ -1,4 +1,4 @@
-package wp
+package testrtags
 
 import rtags._
 import rx._
