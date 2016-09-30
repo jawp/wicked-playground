@@ -33,3 +33,5 @@ trait RAttrValue {
   }
 
 }
+
+object RAttrValue extends RAttrValue
