@@ -6,7 +6,7 @@ import utest._
 
 import scalatags.JsDom.all._
 
-object ClassAttrSpec extends TestSuite {
+object ClsSpec extends TestSuite {
   val tests = this {
 
 
