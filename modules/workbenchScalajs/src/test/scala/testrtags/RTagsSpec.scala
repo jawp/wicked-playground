@@ -9,6 +9,19 @@ import scalatags.JsDom.all._
 object RTagsSpec extends TestSuite {
 
   val tests = this {
+    'rClassValue {
+      val rClass1: Var[String] = Var("anaga")
+      val rClass2: Rx[String] = rClass1.map(_.reverse)
+      val rClass3: Rx.Dynamic[String] = rClass1.map(_ + "-mountains")
+
+      //If test stop throwing exception on below line, finish the test
+      val t = div(rClass1, rClass2, rClass3).render
+
+      //now at least test if it compiles
+
+      val t = div(cls := rClass1, cls := rClass2, cls := rClass3)
+    }
+
     'rStyleValue {
       val rColor: Var[String] = Var("blue")
       val rBorderStyleTop: Rx[String] = rColor.map(x => if(x.size > 3) borderTopStyle.dashed.v else borderTopStyle.solid.v)

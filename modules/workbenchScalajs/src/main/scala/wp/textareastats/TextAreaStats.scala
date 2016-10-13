@@ -2,14 +2,11 @@ package wp.textareastats
 
 
 import org.scalajs.dom
-
-import scalatags.JsDom
-import scalatags.JsDom.TypedTag
-import scalatags.generic.StylePair
-import org.scalajs._
 import org.scalajs.dom.html.Pre
 import rx.Rx.Dynamic
-import rx._
+
+import scalatags.JsDom.TypedTag
+import scalatags.generic.StylePair
 
 object TextAreaStats {
 
@@ -71,8 +68,9 @@ object TextAreaStats {
           SimpleSS.x,
           "The div"
         ))
-      ),
-      JsDom.tags2.style(SimpleSS.styleSheetText)
+      )
+//      ,
+//      JsDom.tags2.style(SimpleSS.styleSheetText)
 
     ).render
 
