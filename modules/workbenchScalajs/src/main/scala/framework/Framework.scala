@@ -1,8 +1,6 @@
 package framework
 
-import org.scalajs.dom.Element
-import org.scalajs.dom.Node
-import org.scalajs.dom.raw.HTMLElement
+import org.scalajs.dom.{Element, Node}
 import rx._
 
 import scala.annotation.tailrec
@@ -50,6 +48,68 @@ trait Framework {
       r.trigger { implicitly[StyleValue[T]].apply(t, s, r.now) }
     }
   }
+
+// todo bindFrag and bindFrags
+//  implicit class bindRxFrag[T <: Frag](e: Rx[T]) extends Modifier {
+//    def applyTo(t: Element) = {
+//      val element = new AtomicReference(e().render)
+//      t.appendChild(element get())
+//      e foreach( { current =>
+//        val previous = element getAndSet current.render
+//        t.replaceChild(element.get, previous)
+//      })
+//    }
+//  }
+//
+//  private def comment(txt: String) = new Modifier {
+//    override def applyTo(t: Element): Unit = {
+//      val c = new Comment
+//      c.data = txt
+//      t.appendChild(c)
+//    }
+//  }
+//
+//  private val emptyComment = new Modifier {
+//    override def applyTo(t: Element): Unit = {
+//      t.appendChild(new Comment)
+//    }
+//  }
+//
+//  private def rxNull() = new Frag {
+//    def render: Element = {
+//      val elem = dom.document.createElementNS(null, "rx-null")
+//      elem.asInstanceOf[Element]
+//    }
+//    override def applyTo(t: Element): Unit = t.appendChild(render)
+//  }
+//
+//  implicit class bindRxFrags[T <: Frag](rx: Rx[immutable.Iterable[T]]) extends Modifier {
+//
+//    override def applyTo(t: Element) = {
+//      val nonempty = rx.map(t => if (t.isEmpty) List(rxNull()) else t)
+//      val elements = new AtomicReference(nonempty().map(_.render))
+//      elements get() foreach t.appendChild
+//      rx foreach( { current =>
+//        val nonempty =  if (current.isEmpty) List(rxNull()) else current
+//        val previous = elements getAndSet nonempty.map(_.render)
+//        replace(previous, elements.get(), t)
+//      })
+//    }
+//  }
+//
+//  private def replace(oldies: Iterable[Node], newbies: Iterable[Node], parent: dom.Element): Unit = {
+//    val i = parent.childNodes.indexOf(oldies.head)
+//    if (i < 0) throw new IllegalStateException("Children changed")
+//    oldies foreach parent.removeChild
+//
+//    if (parent.childNodes.length > i) {
+//      val next = parent.childNodes.item(i)
+//      newbies foreach (parent.insertBefore(_, next))
+//    } else {
+//      newbies foreach parent.appendChild
+//    }
+//  }
+
 }
 
 object Framework extends Framework {
