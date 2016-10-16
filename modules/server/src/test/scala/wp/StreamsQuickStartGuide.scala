@@ -1,5 +1,7 @@
 package wp
 
+import java.nio.file.StandardOpenOption._
+
 import akka.actor.ActorSystem
 import akka.actor.Status.Success
 import akka.stream.{ActorMaterializer, Materializer}
@@ -71,11 +73,10 @@ class StreamsQuickStartGuide extends WickedSpec {
 
     //FileIO is akka utility for creating sikns related to File opeartions
     //Let's create sink which will operate on a file.
-    val sink: Sink[ByteString, Future[IOResult]] = FileIO.toPath(Paths.get("factorials.tmp.txt"))
+    val sink: Sink[ByteString, Future[IOResult]] = FileIO.toPath(Paths.get("factorials.tmp.txt"), options = Set(WRITE, CREATE, TRUNCATE_EXISTING))
 
     val result: Future[IOResult] = factorials
-      //it the file exist - the new file is weirdly merged !
-      //this is probably a bug because scaladoc tells that file will be overridden!
+      //if the file exist it will be replaced
       .runWith(sink)
 
     result.futureValue.status.success.value mustBe Done
