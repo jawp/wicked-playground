@@ -55,4 +55,17 @@ class EqualDemo extends wp.Spec {
     //Foo("bar") ≠ "fobar" won't compile
   }
 
+  "assert_===" in {
+    class Foo(val bar: String)
+    def Foo(bar: String) = new Foo(bar)
+    import scalaz._
+    import scalaz.syntax.all._
+    implicit val fooEqual = Equal.equal[Foo]((a, b) => a.bar == b.bar)
+
+    //in order to use assert_=== show inscance must be in scope
+    implicit val FooShow = Show.shows[Foo](foo => s"Foo(${foo.bar})")
+
+    Foo("a") assert_=== Foo("a")
+  }
+
 }
