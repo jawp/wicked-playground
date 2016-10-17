@@ -39,6 +39,10 @@ class EnumDemo extends wp.Spec {
 
     //and so on.
     //see EnumOps for more syntax operators
+
+    //Enum has bounds
+    Enum[Int].max.value mustBe Int.MaxValue
+    Enum[Int].min.value mustBe Int.MinValue
   }
 
   "custom Enum" in {
@@ -57,6 +61,8 @@ class EnumDemo extends wp.Spec {
 
     //but this will
     (Counter(0, 5) |-> Counter(3, 5)) mustBe List(Counter(0,5), Counter(1,5), Counter(2,5), Counter(3,5))
+
+    Enum[Counter].max mustBe None //if no defined in custom enum max/min are None
   }
 
   //model and data
