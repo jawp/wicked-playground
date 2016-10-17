@@ -58,7 +58,7 @@ class ApplicativeDemo extends wp.Spec {
     val a = 1.some
     val b = 2.some
     val c = 3.some
-    def f(a: Int, b: Int): Int = ???
+    def f(a: Int, b: Int): Int = a+b
 
     //below are different ways of doing the same thing:
     ^(a,b)(f) mustBe c
