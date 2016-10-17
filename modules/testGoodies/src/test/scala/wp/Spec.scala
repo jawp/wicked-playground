@@ -4,7 +4,7 @@ import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.prop.PropertyChecks
 
-class   WickedSpec
+class   Spec
 extends FreeSpec
 with    MustMatchers
 with    DiagrammedAssertions

@@ -5,7 +5,7 @@ import rx._
 
 import scala.collection.mutable
 
-class ScalaRxDemo extends WickedSpec {
+class ScalaRxDemo extends wp.Spec {
 
   "rx and Ctx.Owner macro magic" in {
 

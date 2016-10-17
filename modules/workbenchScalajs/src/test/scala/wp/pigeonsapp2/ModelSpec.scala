@@ -1,9 +1,9 @@
 package wp.pigeonsapp2
 
-import wp.WickedSpec
+import wp.Spec
 import wp.pigeonapp2.Model
 
-class ModelSpec extends WickedSpec {
+class ModelSpec extends wp.Spec {
   import Model._
 
   "Model should work" in {

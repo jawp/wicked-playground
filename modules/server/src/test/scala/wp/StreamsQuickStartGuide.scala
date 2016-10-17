@@ -9,7 +9,7 @@ import akka.stream.{ActorMaterializer, Materializer}
 import scala.util.Try
 import scalaz.syntax.id._
 
-class StreamsQuickStartGuide extends WickedSpec {
+class StreamsQuickStartGuide extends wp.Spec {
 
   //based on http://doc.akka.io/docs/akka/2.4.10/scala/stream/stream-quickstart.html#stream-quickstart-scala
 
