@@ -6,11 +6,13 @@ class OrderDemo extends wp.Spec {
   import scalaz.Order
   import scalaz.syntax.all._
 
-
   "hello Order" in {
 
-    import OrderByAge._
-    // <- this brings Order[Person] implicit in scope, so below syntax is enabled
+    //here lives Order[Int] which is required in below line
+    import scalaz.std.anyVal._
+
+    //this is needed by Order syntax
+    implicit val order: Order[Person] = Order.orderBy[Person, Int](_.age)
 
     (son < mum) mustBe true
     (son <= mum) mustBe true
@@ -38,34 +40,15 @@ class OrderDemo extends wp.Spec {
   }
 
   "order by high score" in {
-    //Let's say you've changed your mind and now you want to order by another attribute, say starcraft high score:
-
-    import OrderByHighScore._
-
-    // <- this will shadow previous implicit and brings new Order[Person] in scope
+    //Let's say you've changed your mind and now you want to order by another attribute, say star craft high score:
+    import scalaz.std.anyVal._
+    implicit val order: Order[Person] = Order.orderBy[Person, Long](_.starCraftHighScore)
 
     (son < mum) mustBe false
     (son <= mum) mustBe false
     (son > mum) mustBe true
     (son >= mum) mustBe true
     // ...
-  }
-
-
-  object OrderByAge {
-
-    import scalaz.std.anyVal._
-
-    // <-- here lives Order[Int] which is required in below line
-    implicit val order: Order[Person] = Order.orderBy[Person, Int](_.age)
-  }
-
-  object OrderByHighScore {
-
-    import scalaz.std.anyVal._
-
-    // <-- here lives Order[Long] which is required in below line
-    implicit val order: Order[Person] = Order.orderBy[Person, Long](_.starCraftHighScore)
   }
 
   //model and data
