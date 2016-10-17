@@ -23,7 +23,8 @@ lazy val testGoodies = project.in(file("modules/testGoodies"))
   .settings(Common.settings)
   .settings(libraryDependencies ++= Seq(
     scalaTest % Test,
-    scalaCheck % Test
+    scalaCheck % Test,
+    discipline % Test
   ))
 
 lazy val server = project.in(file("modules/server"))
@@ -78,10 +79,7 @@ lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
       spireMath,
       resetAllAttrs,
       paradiseCompilerPlugin,
-      kindProjectorCompilerPlugin,
-      scalaCheck % Test,
-      scalaTest % Test,
-      discipline % Test
+      kindProjectorCompilerPlugin
     )
   )
   .dependsOn(testGoodies % "test->test")
