@@ -1,7 +1,5 @@
 package howitworks.scalaz
 
-//import scalaz.syntax.id._
-
 class EqualDemo extends wp.Spec {
 
   //about scalaz.Equal
@@ -14,10 +12,7 @@ class EqualDemo extends wp.Spec {
     //import guide:
 
     import scalaz.syntax.all._
-
-    //or
-    //val equalOps = new scalaz.syntax.ToEqualOps {}
-    //import equalOps._
+    //or more detailed: import scalaz.syntax.equal._
 
     import scalaz.std.AllInstances._
 
@@ -37,7 +32,7 @@ class EqualDemo extends wp.Spec {
     def Foo(bar: String) = new Foo(bar)
 
 
-    import scalaz._
+    import scalaz.Equal
     import scalaz.syntax.all._
 
     //first create Equal instance in scope
