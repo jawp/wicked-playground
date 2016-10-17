@@ -50,7 +50,7 @@ class TypeSafety extends wp.Spec {
     import spire.algebra.Ring
     import spire.implicits._
 
-    //not sure if such routing has been already provided by spire
+    //not sure if such routine has been already provided by spire
     def makeRing[A, B: Ring](f: A => B)(g: B => A): Ring[A] = new Ring[A] {
       override def one: A = Ring[B].one |> g
       override def plus(x: A, y: A): A = (f(x) + f(y)) |> g
