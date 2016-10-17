@@ -1,4 +1,4 @@
-package thoughts
+package wip
 
 class MonoidInstances extends wp.Spec {
 
