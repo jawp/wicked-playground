@@ -54,6 +54,16 @@ class ApplicativeDemo extends wp.Spec {
     //for options this style will work as well
     (4.some |@| 65.some)(_+_) mustBe 69.some
 
-    //TODO examples with traverse and sequence
+    //summary
+    val a = 1.some
+    val b = 2.some
+    val c = 3.some
+    def f(a: Int, b: Int): Int = ???
+
+    //below are different ways of doing the same thing:
+    ^(a,b)(f) mustBe c
+    (a |@| b)(f) mustBe c
+    Applicative[Option].ap2(a, b) (Applicative[Option].point(f _)) mustBe c
+    //the third way is the most ugly, this is why ^ and |@| take place
   }
 }
