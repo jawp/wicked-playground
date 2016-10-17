@@ -1,7 +1,5 @@
 package howitworks.scalacheck
-import cats.laws.discipline.arbitrary
-import org.scalacheck
-import org.scalacheck.Test.{Parameters, Result}
+import org.scalacheck.Test.Result
 import org.scalacheck._
 import org.scalacheck.rng.Seed
 

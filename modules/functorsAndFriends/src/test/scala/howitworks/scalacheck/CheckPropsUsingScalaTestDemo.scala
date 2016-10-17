@@ -1,11 +1,9 @@
 package howitworks.scalacheck
 
-import org.scalacheck
-import org.scalacheck.{Arbitrary, Gen, Prop, Shrink}
+import org.scalacheck.{Arbitrary, Gen, Shrink}
 import org.scalactic.Prettifier
 import org.scalactic.source.Position
 import org.scalatest.enablers.CheckerAsserting
-import org.scalatest.prop.{Configuration, GeneratorDrivenPropertyChecks}
 
 class CheckPropsUsingScalaTestDemo extends wp.Spec {
 

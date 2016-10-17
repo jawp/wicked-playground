@@ -1,6 +1,5 @@
 package howitworks.scalacheck
 
-import org.scalacheck
 import org.scalacheck.{Prop, Properties}
 
 class CheckPropsUsingCheckers extends wp.Spec {
