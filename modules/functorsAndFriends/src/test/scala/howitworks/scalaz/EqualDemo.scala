@@ -1,5 +1,4 @@
-package howitworks.cats
-
+package howitworks.scalaz
 
 //import scalaz.syntax.id._
 
