@@ -4,7 +4,7 @@ import Dependencies._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
-  .aggregate(core, clapi, server, workbenchScalajs, testGoodies)
+  .aggregate(core, clapi, server, workbenchScalajs, testGoodies, functorsAndFriends)
 
 lazy val core = project.in(file("modules/core"))
   .settings(Common.settings)
@@ -84,3 +84,4 @@ lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
       discipline % Test
     )
   )
+  .dependsOn(testGoodies % "test->test")
