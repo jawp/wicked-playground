@@ -21,7 +21,7 @@ trait FakePrintln {
     * This will supress printlining in tests.
     * Comment it out when playing around.
     */
-//  def println[A](s: A): Unit = FakePrintln.notifyUser
+  def println[A](s: A): Unit = FakePrintln.notifyUser
 }
 
 object FakePrintln {
