@@ -31,7 +31,7 @@ lazy val server = project.in(file("modules/server"))
   .settings(libraryDependencies ++= Seq(
     `akka-http-experimental`,
     cats,
-    scalaz,
+    scalazCore,
     `akka-slf4j`,
     `logback-classick`,
     `json4s-jackson`,
@@ -67,3 +67,20 @@ lazy val workbenchScalajs = project.in(file("modules/workbenchScalajs"))
     bootSnippet := "wp.WorkbenchApp().main(document.getElementById('mainDiv'));"
   )
   .dependsOn(core, testGoodies % "test->test")
+
+
+lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
+  .settings(Common.settings)
+  .settings(
+    libraryDependencies ++= Seq(
+      cats,// exclude("org.scalacheck", "scalacheck_2.11" /*1.12.5*/),
+      scalazCore, scalazEffect, scalazConcurrent, scalazEffect,
+      spireMath,
+      resetAllAttrs,
+      paradiseCompilerPlugin,
+      kindProjectorCompilerPlugin,
+      scalaCheck % Test,
+      scalaTest % Test,
+      discipline % Test
+    )
+  )

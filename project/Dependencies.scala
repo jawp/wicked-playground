@@ -29,6 +29,10 @@ object Dependencies {
   val sparkVersion = "1.6.1"
   val specs2Version = "3.7.2"
   val akkaHttpCirce = "1.10.0" //todo update and remove package de.heiko.... https://dl.bintray.com/hseeberger/maven/de/heikoseeberger/akka-http-circe_2.11/1.10.0-1-ga514d78/
+  val resetAllAttrsVersion = "1.0.0-M1"
+  val paradiseVersion = "2.1.0"
+  val kindProjectorVersion = "0.6.3"
+  val disciplineVersion = "0.7" //cats-kernel-laws introduces old version of discipline and scalacheck. watch out!
 
   val `akka-core` = "com.typesafe.akka" %% "akka-http-core" % akkaVersion
   val `akka-http-experimental` = "com.typesafe.akka" %% "akka-http-experimental" % akkaVersion
@@ -41,8 +45,16 @@ object Dependencies {
   val scalaTest = "org.scalatest" %% "scalatest" % scalatestVersion
   val scalaCheck = "org.scalacheck" %% "scalacheck" % scalacheckVersion
   val cats = "org.typelevel" %% "cats" % catsVersion
-  val scalaz = "org.scalaz" %% "scalaz-core" % scalazVersion
-  val `spire-math` = "org.spire-math" %% "spire" % spireMathVerion
+  val discipline = "org.typelevel" %% "discipline" % disciplineVersion
+  val paradiseCompilerPlugin = compilerPlugin("org.scalamacros" % "paradise" % paradiseVersion cross CrossVersion.full)
+  val kindProjectorCompilerPlugin = compilerPlugin("org.spire-math" %% "kind-projector" % kindProjectorVersion)
+
+  val scalazCore = "org.scalaz" %% "scalaz-core" % scalazVersion
+  val scalazEffect = "org.scalaz" %% "scalaz-effect" % scalazVersion
+  val scalazConcurrent = "org.scalaz" %% "scalaz-concurrent" % scalazVersion
+  val scalazIteratee = "org.scalaz" %% "scalaz-iteratee" % scalazVersion
+  val spireMath = "org.spire-math" %% "spire" % spireMathVerion
+  val resetAllAttrs = "org.scalamacros" %% "resetallattrs" % resetAllAttrsVersion
   val `play-scalajs-scripts` = "com.vmunier" %% "play-scalajs-scripts" % playScalaJsScriptsVersion
   val slick = "com.typesafe.slick" %% "slick" % slickVersion
   val `play-slick` = "com.typesafe.play" %% "play-slick" % playSlickVersion
