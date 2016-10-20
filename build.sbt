@@ -1,6 +1,8 @@
 name := """wicked-playground"""
 
 import Dependencies._
+import org.scalajs.sbtplugin.cross.CrossProject
+import spray.revolver.RevolverPlugin._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
@@ -28,6 +30,8 @@ lazy val testGoodies = project.in(file("modules/testGoodies"))
   ))
 
 lazy val server = project.in(file("modules/server"))
+  .settings(Revolver.settings: _*)
+  .settings(mainClass in Revolver.reStart := Some("wp.ServerMain"))
   .settings(Common.settings)
   .settings(libraryDependencies ++= Seq(
     `akka-http-experimental`,
@@ -39,14 +43,18 @@ lazy val server = project.in(file("modules/server"))
     `json4s-ext`,
     upicle,
     `akka-http-circe`,
-    scalaTest % Test
+    scalaTest % Test,
+    "com.lihaoyi" %% "scalatags" % "0.6.0"
   ))
-  .dependsOn(core, testGoodies % "test->test")
-
-
-import com.lihaoyi.workbench.Plugin._
+  .settings((resourceGenerators in Compile) <+=
+    (fastOptJS in Compile in frontend,
+      packageScalaJSLauncher in Compile in frontend)
+      .map((f1, f2) => Seq(f1.data, f2.data)),
+    watchSources <++= (watchSources in frontend))
+  .dependsOn(jvmCp, core, testGoodies % "test->test")
 
 lazy val frontend = project.in(file("modules/frontend"))
+  .enablePlugins(ScalaJSPlugin)
   .settings(Common.settings)
   .settings(libraryDependencies ++= Seq(
     "com.lihaoyi" %%% "scalatags" % scalaTagsVersion,
@@ -57,18 +65,13 @@ lazy val frontend = project.in(file("modules/frontend"))
     "com.lihaoyi" %%% "utest" % uTestVersion
   ))
   .settings(
+    persistLauncher in Compile := true,
+    persistLauncher in Test := false,
     testFrameworks += new TestFramework("utest.runner.Framework"),
     jsDependencies += RuntimeDOM
 //    ,scalaJSUseRhino in Global := false
   )
-  .enablePlugins(org.scalajs.sbtplugin.ScalaJSPlugin)
-  .settings(workbenchSettings)
-  .settings(
-    refreshBrowsers <<= refreshBrowsers.triggeredBy(fastOptJS in Compile),
-    bootSnippet := "wp.WorkbenchApp().main(document.getElementById('mainDiv'));"
-  )
-  .dependsOn(core, testGoodies % "test->test")
-
+  .dependsOn(jsCp, core, testGoodies % "test->test")
 
 lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
   .settings(Common.settings)
@@ -83,3 +86,22 @@ lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
     )
   )
   .dependsOn(testGoodies % "test->test")
+
+lazy val shared =
+  CrossProject("shared", file("shared"), CrossType.Pure)
+    .settings(Common.settings: _*)
+    .settings(
+      libraryDependencies ++= Seq(
+        "org.scalatest" %%% "scalatest" % "3.0.0" % "test"
+      )
+    )
+
+lazy val sharedJvm = shared.jvm
+
+lazy val jvmCp =
+  sharedJvm % "compile -> compile; test -> test"
+
+lazy val sharedJs = shared.js
+
+lazy val jsCp =
+  sharedJs % "compile -> compile; test -> test"

@@ -4,8 +4,8 @@ import java.util.concurrent.Executors
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.marshalling.{Marshaller, ToEntityMarshaller}
-import akka.http.scaladsl.model.{MediaTypes, StatusCodes}
+import akka.http.scaladsl.marshalling.{Marshaller, ToEntityMarshaller, ToResponseMarshallable}
+import akka.http.scaladsl.model.{HttpEntity, MediaTypes, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
@@ -22,6 +22,9 @@ object ServerMain extends App {
   implicit val ec = system.dispatcher
 
   val routes: Route =
+    pathSingleSlash(
+      get(complete(IndexPage.render()))
+    ) ~
     path("hello") {
       get {
         complete("world")
