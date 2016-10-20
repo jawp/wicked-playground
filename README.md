@@ -21,11 +21,11 @@ Learning resources:
 - [Move Over Free Monads: Make Way for Free Applicatives! by John de Goes](https://www.youtube.com/watch?v=H28QqxO7Ihc), slides [here](https://github.com/jdegoes/scalaworld-2015/blob/master/presentation.md)
 - [Composable application architecture with reasonably priced monads - by Rúnar Bjarnason](https://www.youtube.com/watch?v=M258zVn4m2M) (about free monads)
 
-## workbenchScalajs
+## frontend
 Simple project for working with scalajs. 
 Run:
 
-    ./scripts/workbench-scalajs.sh
+    ./scripts/frontend-scalajs.sh
 
-... [open a browser](http://localhost:12345/modules/workbenchScalajs/target/scala-2.11/classes/index-dev.html) and play around.
+... [open a browser](http://localhost:12345/modules/frontend/target/scala-2.11/classes/index-dev.html) and play around.
 Project based on [lihaoyi/workbench-example-app](https://github.com/lihaoyi/workbench-example-app)

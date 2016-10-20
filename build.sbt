@@ -4,7 +4,7 @@ import Dependencies._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
-  .aggregate(core, clapi, server, workbenchScalajs, testGoodies, functorsAndFriends)
+  .aggregate(core, clapi, server, frontend, testGoodies, functorsAndFriends)
 
 lazy val core = project.in(file("modules/core"))
   .settings(Common.settings)
@@ -46,7 +46,7 @@ lazy val server = project.in(file("modules/server"))
 
 import com.lihaoyi.workbench.Plugin._
 
-lazy val workbenchScalajs = project.in(file("modules/workbenchScalajs"))
+lazy val frontend = project.in(file("modules/frontend"))
   .settings(Common.settings)
   .settings(libraryDependencies ++= Seq(
     "com.lihaoyi" %%% "scalatags" % scalaTagsVersion,
