@@ -35,6 +35,7 @@ object Dependencies {
   val disciplineVersion = "0.7" //cats-kernel-laws introduces old version of discipline and scalacheck. watch out!
 
   val `akka-core` = "com.typesafe.akka" %% "akka-http-core" % akkaVersion
+  val `akka-agent` = "com.typesafe.akka" %% "akka-agent" % akkaVersion
   val `akka-http-experimental` = "com.typesafe.akka" %% "akka-http-experimental" % akkaVersion
   val `akka-http-spray-json-experimental` = "com.typesafe.akka" %% "akka-http-spray-json-experimental" % akkaVersion
   val `akka-http-testkit` = "com.typesafe.akka" %% "akka-http-testkit" % akkaVersion

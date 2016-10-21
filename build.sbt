@@ -35,6 +35,7 @@ lazy val server = project.in(file("modules/server"))
   .settings(Common.settings)
   .settings(libraryDependencies ++= Seq(
     `akka-http-experimental`,
+    `akka-agent`,
     cats,
     scalazCore,
     `akka-slf4j`,
@@ -67,6 +68,7 @@ lazy val frontend = project.in(file("modules/frontend"))
   .settings(
     persistLauncher in Compile := true,
     persistLauncher in Test := false,
+    mainClass in Compile := Some("wp.PigeonsApp"),
     testFrameworks += new TestFramework("utest.runner.Framework"),
     jsDependencies += RuntimeDOM
 //    ,scalaJSUseRhino in Global := false
