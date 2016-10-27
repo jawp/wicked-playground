@@ -4,11 +4,10 @@ import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.prop.PropertyChecks
 
-class   Spec
+class   SpecSkeleton
 extends FreeSpec
 with    MustMatchers
 with    DiagrammedAssertions
-with    PropertyChecks
 with    TryValues
 with    OptionValues
 with    AppendedClues

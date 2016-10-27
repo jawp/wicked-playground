@@ -1,9 +1,8 @@
-package wp
-
-import rx.Ctx.Owner
-import rx._
+package howitworks.scalarx
 
 import scala.collection.mutable
+import rx._
+import rx.Ctx.Owner
 
 class ScalaRxDemo extends wp.Spec {
 

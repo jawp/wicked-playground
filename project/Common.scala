@@ -1,10 +1,11 @@
 import sbt.Keys._
+import sbt.Tests.Argument
 import sbt._
 
 object Common {
   val appVersion = "0.1-SNAPSHOT"
 
-  var settings: Seq[Def.Setting[_]] = Seq(
+  val settings: Seq[Def.Setting[_]] = Seq(
     version := appVersion,
     scalaVersion := "2.11.8",
     organization := "jawp",
@@ -23,4 +24,15 @@ object Common {
     ),
     testOptions in Test += Tests.Argument("-oD", "-F", "10")   //org.scalatest.tools.Runner - description of options
   )
+
+
+  /**
+    * replace '-F <timeSpan>' options, they are not supported in scalatest-js
+    * @return
+    */
+  def replaceSpanFactor(options: Seq[sbt.TestOption]) = options.map {
+
+    case a: Argument if a.args.contains("-F") => a.copy(args = a.args.patch(a.args.indexOf("-F"), Nil, 2))
+    case x => x
+  }
 }

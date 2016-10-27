@@ -6,11 +6,7 @@ import spray.revolver.RevolverPlugin._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
-  .aggregate(core, clapi, server, frontend, testGoodies, functorsAndFriends)
-
-lazy val core = project.in(file("modules/core"))
-  .settings(Common.settings)
-  .settings(libraryDependencies ++= Seq())
+  .aggregate(clapi, server, frontend, functorsAndFriends, shared.js, shared.jvm)
 
 lazy val clapi = project.in(file("modules/clapi"))
   .settings(Common.settings)
@@ -19,15 +15,7 @@ lazy val clapi = project.in(file("modules/clapi"))
     `json4s-ext`,
     scalaTest % Test
   ))
-  .dependsOn(core, testGoodies % "test->test")
-
-lazy val testGoodies = project.in(file("modules/testGoodies"))
-  .settings(Common.settings)
-  .settings(libraryDependencies ++= Seq(
-    scalaTest % Test,
-    scalaCheck % Test,
-    discipline % Test
-  ))
+  .dependsOn(jvmCp)
 
 lazy val server = project.in(file("modules/server"))
   .settings(Revolver.settings: _*)
@@ -45,6 +33,7 @@ lazy val server = project.in(file("modules/server"))
     upicle,
     `akka-http-circe`,
     scalaTest % Test,
+    scalarx,
     "com.lihaoyi" %% "scalatags" % "0.6.0"
   ))
   .settings((resourceGenerators in Compile) <+=
@@ -52,7 +41,7 @@ lazy val server = project.in(file("modules/server"))
       packageScalaJSLauncher in Compile in frontend)
       .map((f1, f2) => Seq(f1.data, f2.data)),
     watchSources <++= (watchSources in frontend))
-  .dependsOn(jvmCp, core, testGoodies % "test->test")
+  .dependsOn(jvmCp)
 
 lazy val frontend = project.in(file("modules/frontend"))
   .enablePlugins(ScalaJSPlugin)
@@ -72,8 +61,10 @@ lazy val frontend = project.in(file("modules/frontend"))
     testFrameworks += new TestFramework("utest.runner.Framework"),
     jsDependencies += RuntimeDOM
 //    ,scalaJSUseRhino in Global := false
+    ,
+    testOptions in Test := Common.replaceSpanFactor(testOptions.value)
   )
-  .dependsOn(jsCp, core, testGoodies % "test->test")
+  .dependsOn(jsCp)
 
 lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
   .settings(Common.settings)
@@ -87,14 +78,22 @@ lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
       kindProjectorCompilerPlugin
     )
   )
-  .dependsOn(testGoodies % "test->test")
+  .dependsOn(jvmCp)
 
 lazy val shared =
   CrossProject("shared", file("shared"), CrossType.Pure)
     .settings(Common.settings: _*)
-    .settings(
+    .jsSettings(
+      testOptions in Test := Common.replaceSpanFactor(testOptions.value),
       libraryDependencies ++= Seq(
-        "org.scalatest" %%% "scalatest" % "3.0.0" % "test"
+        "org.scalatest" %%% "scalatest" % scalatestVersion % Test
+      )
+    )
+    .jvmSettings(
+      libraryDependencies ++= Seq(
+        scalaTest % Test,
+        scalaCheck % Test,
+        discipline % Test
       )
     )
 
