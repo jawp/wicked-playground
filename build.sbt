@@ -6,16 +6,7 @@ import spray.revolver.RevolverPlugin._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
-  .aggregate(sharedJs, sharedJvm, clapi, server, frontend, functorsAndFriends)
-
-lazy val clapi = project.in(file("modules/clapi"))
-  .settings(Common.settings)
-  .settings(libraryDependencies ++= Seq(
-    `json4s-jackson`,
-    `json4s-ext`,
-    scalaTest % Test
-  ))
-  .dependsOn(sharedJvmCp)
+  .aggregate(sharedJs, sharedJvm, server, frontend, clapi)
 
 lazy val server = project.in(file("modules/server"))
   .settings(Revolver.settings: _*)
@@ -24,8 +15,6 @@ lazy val server = project.in(file("modules/server"))
   .settings(libraryDependencies ++= Seq(
     `akka-http-experimental`,
     `akka-agent`,
-    cats,
-    scalazCore,
     `akka-slf4j`,
     `logback-classick`,
     `json4s-jackson`,
@@ -34,7 +23,13 @@ lazy val server = project.in(file("modules/server"))
     `akka-http-circe`,
     scalaTest % Test,
     scalarx,
-    "com.lihaoyi" %% "scalatags" % "0.6.0"
+    scalatags,
+    cats, // exclude("org.scalacheck", "scalacheck_2.11" /*1.12.5*/),
+    scalazCore, scalazEffect, scalazConcurrent, scalazEffect,
+    spireMath,
+    resetAllAttrs,
+    paradiseCompilerPlugin,
+    kindProjectorCompilerPlugin
   ))
   .settings((resourceGenerators in Compile) <+=
     (fastOptJS in Compile in frontend,
@@ -66,20 +61,6 @@ lazy val frontend = project.in(file("modules/frontend"))
   )
   .dependsOn(sharedJsCp)
 
-lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
-  .settings(Common.settings)
-  .settings(
-    libraryDependencies ++= Seq(
-      cats,// exclude("org.scalacheck", "scalacheck_2.11" /*1.12.5*/),
-      scalazCore, scalazEffect, scalazConcurrent, scalazEffect,
-      spireMath,
-      resetAllAttrs,
-      paradiseCompilerPlugin,
-      kindProjectorCompilerPlugin
-    )
-  )
-  .dependsOn(sharedJvmCp)
-
 lazy val shared =
   CrossProject("shared", file("modules/shared"), CrossType.Pure)
     .settings(Common.settings: _*)
@@ -106,3 +87,12 @@ lazy val sharedJs = shared.js
 
 lazy val sharedJsCp =
   sharedJs % "compile -> compile; test -> test"
+
+lazy val clapi = project.in(file("modules/clapi"))
+  .settings(Common.settings)
+  .settings(libraryDependencies ++= Seq(
+    `json4s-jackson`,
+    `json4s-ext`,
+    scalaTest % Test
+  ))
+  .dependsOn(sharedJvmCp)
