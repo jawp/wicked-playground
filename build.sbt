@@ -81,7 +81,7 @@ lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
   .dependsOn(jvmCp)
 
 lazy val shared =
-  CrossProject("shared", file("shared"), CrossType.Pure)
+  CrossProject("shared", file("modules/shared"), CrossType.Pure)
     .settings(Common.settings: _*)
     .jsSettings(
       testOptions in Test := Common.replaceSpanFactor(testOptions.value),

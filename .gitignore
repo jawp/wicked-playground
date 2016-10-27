@@ -26,6 +26,4 @@ src_managed/
 test-output/
 *.iml
 .classpath_nb
-.js/
-.jvm/
 */logs/
