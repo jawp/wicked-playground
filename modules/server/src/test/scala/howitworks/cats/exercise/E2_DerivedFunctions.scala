@@ -1,4 +1,4 @@
-package exercise
+package howitworks.cats.exercise
 
 /**
   *

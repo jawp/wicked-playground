@@ -1,4 +1,4 @@
-package wip
+package howitworks.wip
 
 import cats.data.OptionT
 import rng.{Cmwc5, RNG}

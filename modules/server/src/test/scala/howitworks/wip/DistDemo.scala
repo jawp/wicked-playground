@@ -1,4 +1,4 @@
-package wip
+package howitworks.wip
 
 import spire.random._
 

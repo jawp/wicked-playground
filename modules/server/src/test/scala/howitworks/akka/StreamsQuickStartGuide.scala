@@ -1,27 +1,19 @@
-package wp
+package howitworks.akka
 
 import java.nio.file.StandardOpenOption._
-
-import akka.actor.ActorSystem
-import akka.actor.Status.Success
-import akka.stream.{ActorMaterializer, Materializer}
-
-import scala.util.Try
-import scalaz.syntax.id._
 
 class StreamsQuickStartGuide extends wp.Spec {
 
   //based on http://doc.akka.io/docs/akka/2.4.10/scala/stream/stream-quickstart.html#stream-quickstart-scala
 
+  import java.nio.file.Paths
+
   import akka.stream._
   import akka.stream.scaladsl._
-
-  import akka.{NotUsed, Done}
-  import akka.actor.ActorSystem
   import akka.util.ByteString
+  import akka.{Done, NotUsed}
+
   import scala.concurrent._
-  import scala.concurrent.duration._
-  import java.nio.file.Paths
 
 
   "create and consume simple source" in {
@@ -86,9 +78,3 @@ class StreamsQuickStartGuide extends wp.Spec {
 }
 
 
-object SharedAkka {
-  implicit lazy val system = ActorSystem()
-
-  //materialzer depeds on ActorRefFactory so it can be created within an actor
-  implicit lazy val materializer: Materializer = akka.stream.ActorMaterializer()
-}

@@ -1,4 +1,4 @@
-package thoughts
+package howitworks.thoughts
 
 class AboutSets extends wp.Spec {
 

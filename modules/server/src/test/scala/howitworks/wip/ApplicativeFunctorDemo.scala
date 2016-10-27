@@ -1,4 +1,4 @@
-package wip
+package howitworks.wip
 
 class ApplicativeFunctorDemo extends wp.Spec {
 

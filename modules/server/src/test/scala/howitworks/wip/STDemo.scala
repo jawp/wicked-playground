@@ -1,4 +1,4 @@
-package wip
+package howitworks.wip
 
 class STDemo extends wp.Spec {
 

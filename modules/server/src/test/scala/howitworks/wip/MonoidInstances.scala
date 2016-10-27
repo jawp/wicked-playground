@@ -1,4 +1,4 @@
-package wip
+package howitworks.wip
 
 class MonoidInstances extends wp.Spec {
 

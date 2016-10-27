@@ -1,4 +1,5 @@
-package wip
+package howitworks.wip
+
 
 class FreeApDemo {
 
