@@ -6,7 +6,7 @@ import spray.revolver.RevolverPlugin._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
-  .aggregate(clapi, server, frontend, functorsAndFriends, shared.js, shared.jvm)
+  .aggregate(sharedJs, sharedJvm, clapi, server, frontend, functorsAndFriends)
 
 lazy val clapi = project.in(file("modules/clapi"))
   .settings(Common.settings)
@@ -15,7 +15,7 @@ lazy val clapi = project.in(file("modules/clapi"))
     `json4s-ext`,
     scalaTest % Test
   ))
-  .dependsOn(jvmCp)
+  .dependsOn(sharedJvmCp)
 
 lazy val server = project.in(file("modules/server"))
   .settings(Revolver.settings: _*)
@@ -41,7 +41,7 @@ lazy val server = project.in(file("modules/server"))
       packageScalaJSLauncher in Compile in frontend)
       .map((f1, f2) => Seq(f1.data, f2.data)),
     watchSources <++= (watchSources in frontend))
-  .dependsOn(jvmCp)
+  .dependsOn(sharedJvmCp)
 
 lazy val frontend = project.in(file("modules/frontend"))
   .enablePlugins(ScalaJSPlugin)
@@ -64,7 +64,7 @@ lazy val frontend = project.in(file("modules/frontend"))
     ,
     testOptions in Test := Common.replaceSpanFactor(testOptions.value)
   )
-  .dependsOn(jsCp)
+  .dependsOn(sharedJsCp)
 
 lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
   .settings(Common.settings)
@@ -78,7 +78,7 @@ lazy val functorsAndFriends = (project in file("modules/functorsAndFriends"))
       kindProjectorCompilerPlugin
     )
   )
-  .dependsOn(jvmCp)
+  .dependsOn(sharedJvmCp)
 
 lazy val shared =
   CrossProject("shared", file("modules/shared"), CrossType.Pure)
@@ -99,10 +99,10 @@ lazy val shared =
 
 lazy val sharedJvm = shared.jvm
 
-lazy val jvmCp =
+lazy val sharedJvmCp =
   sharedJvm % "compile -> compile; test -> test"
 
 lazy val sharedJs = shared.js
 
-lazy val jsCp =
+lazy val sharedJsCp =
   sharedJs % "compile -> compile; test -> test"
