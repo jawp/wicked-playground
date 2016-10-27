@@ -67,13 +67,22 @@ object Dependencies {
   val `json4s-jackson` = "org.json4s" %% "json4s-jackson" % json4sVersion
   val `json4s-ext` = "org.json4s" %% "json4s-ext" % json4sVersion
   val `nscala-time` = "com.github.nscala-time" %% "nscala-time" % nScalaTimeVersion
-
   val scalatags = "com.lihaoyi" %% "scalatags" % scalaTagsVersion
   val scalarx = "com.lihaoyi" %% "scalarx" % scalaRxVersion
 
-//  val utest = "com.lihaoyi" %%% "utest" % uTestVersion
-  //  val `scalajs-dom` = "org.scala-js"                            %%% "scalajs-dom"     % scalajsDomVersion
-  //  val scalatags = "com.lihaoyi"                             %%% "scalatags"       % scalaTagsVersion
-  //  val scalarx = "com.lihaoyi"                             %%% "scalarx"         % scalaRxVersion
-  //  val `scalajs-jquery` = "be.doeraene"                             %%% "scalajs-jquery"  % doeraeneScalajsJQueryVersion
+  val breeze = "org.scalanlp" %% "breeze" % breezeVersion
+  val breezeNatives = {
+    // native libraries are not included by default. add this if you want them (as of 0.7)
+    // native libraries greatly improve performance, but increase jar sizes.
+    // It also packages various blas implementations, which have licenses that may or may not
+    // be compatible with the Apache License. No GPL code, as best I know.
+    "org.scalanlp" %% "breeze-natives" % breezeVersion
+  }
+  val breezeViz = {
+    // the visualization library is distributed separately as well.
+    // It depends on LGPL code.
+    "org.scalanlp" %% "breeze-viz" % breezeVersion
+  }
+  val spark = "org.apache.spark" %% "spark-core" % sparkVersion
+  val mllib = "org.apache.spark" %% "spark-mllib" % sparkVersion
 }

@@ -2,4 +2,4 @@
 
 unset SBT_OPTS JVM_OPTS
 
-./activator clean test
+./activator -no-colors clean test
