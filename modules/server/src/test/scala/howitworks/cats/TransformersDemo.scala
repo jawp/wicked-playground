@@ -1,12 +1,16 @@
 package howitworks.cats
 
 import cats.data.{OptionT, Xor}
+import org.scalatest.time.{Millis, Seconds, Span}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 
 class TransformersDemo extends wp.Spec {
+
+  implicit val defaultPatience =
+    PatienceConfig(timeout = Span(1, Seconds), interval = Span(50, Millis))
 
   "motivation" in {
 
