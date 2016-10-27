@@ -6,7 +6,7 @@ import spray.revolver.RevolverPlugin._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
-  .aggregate(sharedJs, sharedJvm, server, frontend, clapi)
+  .aggregate(sharedJs, sharedJvm, server, frontend, clapi, sparky)
 
 lazy val server = project.in(file("modules/server"))
   .settings(Revolver.settings: _*)
@@ -96,3 +96,14 @@ lazy val clapi = project.in(file("modules/clapi"))
     scalaTest % Test
   ))
   .dependsOn(sharedJvmCp)
+
+
+lazy val sparky = project.in(file("modules/sparky"))
+  .settings(Common.settings)
+  .settings(libraryDependencies ++= Seq(
+    scalazCore, scalazEffect, scalazConcurrent, scalazEffect,
+    spireMath,
+    breeze, breezeViz, breezeNatives,
+    spark, mllib,
+    scalaTest % Test
+  ))

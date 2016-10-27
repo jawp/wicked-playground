@@ -24,11 +24,13 @@ Simple project for working with scalajs.
 Most every change in code should autoamtically restart server and reload web page.
 
 ## shared
-code which is shared between all other projects
+code which is shared between all other projects.
 
 ## clapi
 Stub for command line app/library which can talk to server.
 
+## sparky
+Examples related to spark.
 
 -----------
 Learning resources:

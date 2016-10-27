@@ -1,7 +1,5 @@
 package howitworks.spark
 
-import org.apache.spark.mllib.linalg.Vectors
-import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.{SparkConf, SparkContext}
 
 object HelloSpark extends App {
@@ -31,7 +29,7 @@ object HelloSpark extends App {
     import scala.collection.JavaConversions._
 
     def load(name: String): Seq[String] = {
-      val path = Paths.get("modules", "server", "data", name)
+      val path = Paths.get("modules", "sparky", "data", name)
       Files.readAllLines(path, Charset.defaultCharset()).filter(_ != "")
     }
   }
