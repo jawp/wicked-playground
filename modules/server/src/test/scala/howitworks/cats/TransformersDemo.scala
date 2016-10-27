@@ -3,8 +3,7 @@ package howitworks.cats
 import cats.data.{OptionT, Xor}
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 
 class TransformersDemo extends wp.Spec {
@@ -24,10 +23,9 @@ class TransformersDemo extends wp.Spec {
         x: String <- x
         y: String <- y
       } yield s"$x $y"
-    }
+    }//it works, but it is hard write code such way
 
-    //it works, but it is hard write code such way
-    Await.result(xy, 500 millis).value mustBe "Nested Monads"
+    xy.futureValue.value mustBe "Nested Monads"
 
     //Let's rewrite it using Monad Transformers.
     import cats.instances.future._ //cats.Functor[Future] is needed
@@ -42,7 +40,7 @@ class TransformersDemo extends wp.Spec {
     val xy2 = xyT.value
 
     //and works as expected
-    Await.result(xy2, 500 millis).value mustBe "Nested Monads"
+    xy2.futureValue.value mustBe "Nested Monads"
 
 
     //Now lets see some more complex example when dealing with Future[Option[A]]
@@ -79,7 +77,7 @@ class TransformersDemo extends wp.Spec {
     }
 
     //it works
-    Await.result(stringAndDescription, 500 millis).value mustBe ("Nested","distribution of letters of 'Nested' is: (N,1), (d,1), (e,2), (s,1), (t,1)")
+    stringAndDescription.futureValue.value mustBe ("Nested","distribution of letters of 'Nested' is: (N,1), (d,1), (e,2), (s,1), (t,1)")
 
     //Ok, let's rewrite it using monad transformers:
     val stringAndDescription2: OptionT[Future, (String, String)] = for {
@@ -88,7 +86,7 @@ class TransformersDemo extends wp.Spec {
     } yield(x,desc)
 
     //and it works like previously
-    Await.result(stringAndDescription2.value, 500 millis).value mustBe ("Nested","distribution of letters of 'Nested' is: (N,1), (d,1), (e,2), (s,1), (t,1)")
+    stringAndDescription2.value.futureValue.value mustBe ("Nested","distribution of letters of 'Nested' is: (N,1), (d,1), (e,2), (s,1), (t,1)")
 
   }
   //  "WriterT " in {
