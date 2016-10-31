@@ -100,10 +100,15 @@ lazy val clapi = project.in(file("modules/clapi"))
 
 lazy val sparky = project.in(file("modules/sparky"))
   .settings(Common.settings)
+  .settings(
+    javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled"),
+    parallelExecution in Test := false
+  )
   .settings(libraryDependencies ++= Seq(
     scalazCore, scalazEffect, scalazConcurrent, scalazEffect,
     spireMath,
     breeze, breezeViz, breezeNatives,
     spark, mllib,
-    scalaTest % Test
-  ))
+    scalaTest % Test,
+    sparkTestingBase % Test
+  )).dependsOn(sharedJvmCp)

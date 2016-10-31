@@ -85,4 +85,5 @@ object Dependencies {
   }
   val spark = "org.apache.spark" %% "spark-core" % sparkVersion
   val mllib = "org.apache.spark" %% "spark-mllib" % sparkVersion
+  val sparkTestingBase = "com.holdenkarau" %% "spark-testing-base" % s"${sparkVersion}_0.3.3"
 }
