@@ -2,6 +2,7 @@ package howitworks.mllib
 
 
 import com.holdenkarau.spark.testing.SharedSparkContext
+import org.apache.spark.mllib.linalg.distributed.IndexedRow
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.rdd.RDD
 
@@ -25,10 +26,10 @@ class Sampling extends wp.Spec with SharedSparkContext {
     data.sample(withReplacement = false, fraction = 0.5, seed = 11L)
       .collect() mustBe Array(
       Vectors.dense(1.0,2.0,3.0)
-    ) withClue "it sampled only one row"
+    ) withClue "it should sampled only one row"
 
     data.sample(withReplacement = false, fraction = 0.5, seed = 123L)
-      .collect() mustBe Array() withClue "no rows were sampled in this case"
+      .collect() mustBe Array() withClue "it should sampled no rows in this case"
 
     data.sample(withReplacement = false, fraction = 0.5, seed = 12L)
       .collect() mustBe Array(
@@ -36,7 +37,7 @@ class Sampling extends wp.Spec with SharedSparkContext {
         Vectors.dense(4.0,5.0,6.0),
 //        Vectors.dense(7.0,8.0,9.0),
         Vectors.dense(10.0,11.0,12.0)
-    ) withClue "it sampled all but one rows in this case"
+    ) withClue "it should sampled all but one rows in this case"
 
     data.sample(withReplacement = false, fraction = 0.5, seed = 10L)
       .collect() mustBe Array(
@@ -44,12 +45,11 @@ class Sampling extends wp.Spec with SharedSparkContext {
       Vectors.dense(4.0,5.0,6.0),
       Vectors.dense(7.0,8.0,9.0),
       Vectors.dense(10.0,11.0,12.0)
-    ) withClue "it sampled all rows in this case"
+    ) withClue "it should sampled all rows in this case"
 
   }
 
   "Stratified Sampling" in {
-
 
     val data = sc.parallelize(Seq(
       (1, 'a'), (1, 'b'),
@@ -63,11 +63,35 @@ class Sampling extends wp.Spec with SharedSparkContext {
       2 -> 0.6,
       3 -> 0.3
     )
-    // Get an approximate sample from each stratum
-    val approxSample0: RDD[(Int, Char)] =
-    data.sampleByKey(withReplacement = false, fractions = fractions, seed = 123L)
 
-    approxSample0.collect() mustBe Array((2, 'd'), (2, 'e'))
+    //stratum = group of pairs with the same key
+
+    // Get an approximate sample from each stratum
+    val sampleGroups0: RDD[(Int, Char)] =
+    data.sampleByKey(withReplacement = false, fractions = fractions, seed = 123L)
+    sampleGroups0.collect() mustBe Array((2, 'd'), (2, 'e'))
+
+    //sampleByKey propoption is guaranteed with 99.9% confidence
+    val sampleGroups1: RDD[(Int, Char)] =
+      data.sampleByKeyExact(withReplacement = false, fractions = fractions, seed = 123L)
+    sampleGroups1.collect() mustBe Array((1,'a'), (2,'d'), (2,'e'), (3,'f'))
+  }
+
+  "stratified sampling RDD[IndexedRow]" in {
+
+    val rows = sc.parallelize(Array(
+      IndexedRow(0L, Vectors.dense(1,2,3)),       //  0
+      IndexedRow(1L, Vectors.dense(11,22,33)),    //  1
+      IndexedRow(1L, Vectors.dense(111,222,333))) //  1
+    )
+
+    rows
+      .map { case IndexedRow(key, vec) => (key, vec) } //first map into tuple
+      .sampleByKey(withReplacement = false, fractions = Map(0L -> 1.0, 1L -> .5), seed = 11L)
+      .collect() mustBe Array(
+        0 -> Vectors.dense(1.0,2.0,3.0),
+        1 -> Vectors.dense(11.0,22.0,33.0)
+      )
   }
 
 }
