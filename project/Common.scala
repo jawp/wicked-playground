@@ -9,7 +9,9 @@ object Common {
     version := appVersion,
     scalaVersion := "2.11.8",
     organization := "jawp",
-    scalacOptions ++= Seq( //based on http://blog.threatstack.com/useful-scalac-options-for-better-scala-development-part-1
+    scalacOptions ++= Seq(
+      //based on http://blog.threatstack.com/useful-scalac-options-for-better-scala-development-part-1
+      //google for "scalac man apge"
       "-target:jvm-1.8",
       "-encoding", "UTF-8",
       "-unchecked",
