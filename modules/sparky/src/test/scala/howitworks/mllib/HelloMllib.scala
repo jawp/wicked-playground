@@ -107,12 +107,13 @@ class HelloMllib extends wp.Spec with SharedSparkContext {
   "Distributed matricies" in {
     //distributed are stored in one or more RDDs
     //3 types:
-    //(1)RowMatrix
-    //(2)IndexRowMatrix
+    //(1)RowMatrix (indices are ints, values are doubles)
+    //(2)IndexRowMatrix (indices are longs, values are doubles, rows are extra indexed)
     //(3)CoordinateMatrix
     //Convertions require shuffling
 
     //(1) most basic types
+    //rows are for example feature vectors
 
     val rows: RDD[Vector] = sc.parallelize(Seq(
       Vectors.dense(1,4),
