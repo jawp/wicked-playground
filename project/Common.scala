@@ -22,6 +22,20 @@ object Common {
       "-Ywarn-value-discard",
       "-Ywarn-unused"
     ),
+    scalacOptions in Test ++= Seq(
+      //less moaning options for tests
+      "-target:jvm-1.8",
+      "-encoding", "UTF-8",
+//      "-unchecked",
+//      "-deprecation",
+      "-feature",
+      "-Xfuture"
+//      "-Yno-adapted-args",
+//      "-Ywarn-dead-code",
+//      "-Ywarn-numeric-widen",
+//      "-Ywarn-value-discard",
+//      "-Ywarn-unused"
+    ),
     testOptions in Test += Tests.Argument("-oD", "-F", "10")   //org.scalatest.tools.Runner - description of options
   )
 
