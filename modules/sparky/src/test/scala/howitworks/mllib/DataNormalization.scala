@@ -33,6 +33,8 @@ class DataNormalization extends wp.Spec with SharedSparkContext {
       .setInputCols(Array("id", "uniform", "normal1", "normal2"))
       .setOutputCol("features")
     val dfVec = assembler.transform(df).select("id", "features")
+
+    //see VectorSlicer - which can extract dimentions from vector
     //end of given
 
     import org.apache.spark.ml.feature.Normalizer
