@@ -7,9 +7,9 @@ import org.apache.spark.sql.{DataFrame, SQLContext}
 
 import scalaz.syntax.id._
 
-class DataNormalization extends wp.Spec with SharedSparkContext {
+class DataRepairing extends wp.Spec with SharedSparkContext {
 
-  "create spoiled data and normalize it" in {
+  "create spoiled data and repair it" in {
     val sqlContext = new SQLContext(sc)
     import sqlContext.implicits._
 
