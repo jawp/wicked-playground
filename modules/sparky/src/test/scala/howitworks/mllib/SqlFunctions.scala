@@ -88,7 +88,7 @@ class SqlFunctions extends wp.Spec with SharedSparkContext {
       ($"commision" / column_len($"salesReps")).as("share"), //now commision is splited equally into each salesRep
       explode($"salesReps").as("salesRep")
     )
-      .show()
+    //      .show()
 
     //    +---+-------+----+------+--------+
     //    | id|account|year| share|salesRep|

@@ -20,7 +20,7 @@ class RandomData extends wp.Spec with SharedSparkContext {
       .withColumn("uniform", rand(seed=123L))
       .withColumn("normal", randn(seed=123L))
 
-    randDF.show()
+//    randDF.show()
 
   }
 }
