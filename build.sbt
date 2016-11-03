@@ -109,6 +109,7 @@ lazy val sparky = project.in(file("modules/sparky"))
     spireMath,
     breeze, breezeViz, breezeNatives,
     spark, mllib,
+    dataBricsCsv,
     scalaTest % Test,
     sparkTestingBase % Test
   )).dependsOn(sharedJvmCp)
