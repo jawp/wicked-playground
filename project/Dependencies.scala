@@ -26,7 +26,8 @@ object Dependencies {
   val doeraeneScalajsJQueryVersion = "0.9.0"
   val breezeVersion = "0.12"
   val spireVersion = "0.11.0"
-  val sparkVersion = "1.6.1"
+  val sparkVersion = "2.0.1"
+  val sparkTestingBaseVersion = "2.0.1_0.4.7" //https://mvnrepository.com/artifact/com.holdenkarau
   val specs2Version = "3.7.2"
   val akkaHttpCirce = "1.10.0" //todo update and remove package de.heiko.... https://dl.bintray.com/hseeberger/maven/de/heikoseeberger/akka-http-circe_2.11/1.10.0-1-ga514d78/
   val resetAllAttrsVersion = "1.0.0-M1"
@@ -88,5 +89,6 @@ object Dependencies {
   val sparkCsv = "org.apache.spark" %% "spark-csv" % sparkVersion
   val dataBricsCsv = "com.databricks" %% "spark-csv" % databricsVersion
   val mllib = "org.apache.spark" %% "spark-mllib" % sparkVersion
-  val sparkTestingBase = "com.holdenkarau" %% "spark-testing-base" % s"${sparkVersion}_0.3.3"
+
+  val sparkTestingBase = "com.holdenkarau" %% "spark-testing-base" % sparkTestingBaseVersion
 }
