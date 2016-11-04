@@ -3,7 +3,7 @@ package howitworks.mllib
 
 import com.holdenkarau.spark.testing.SharedSparkContext
 import org.apache.spark.ml.Estimator
-import org.apache.spark.ml.feature.{IndexToString, OneHotEncoder, StringIndexer}
+import org.apache.spark.ml.feature.{IndexToString, OneHotEncoder, StringIndexer, StringIndexerModel}
 import org.apache.spark.sql.{Row, SQLContext}
 
 import scalaz.syntax.id._
@@ -32,11 +32,16 @@ class CategoricalFeatures extends wp.Spec with SharedSparkContext {
 
     //    df.show()
 
+
+    // String idexer will count by nationality and create array in descending order of nationalities
+    //index of nationality in this array is a decoded integer. This array is caled 'labels'
+    //and it is wrapped into StringIndexerModel
+    //getting labels out of model it is possible to convert back integer (index) to String
     val indexer = new StringIndexer()
       .setInputCol("nationality")
       .setOutputCol("nIndex")
 
-    val model = indexer.fit(df)
+    val model: StringIndexerModel = indexer.fit(df)
     val indexed = model.transform(df)
 
     println(model.labels.toList)
@@ -112,6 +117,9 @@ class CategoricalFeatures extends wp.Spec with SharedSparkContext {
     //    |  4|         US|   0.0|(3,[0],[1.0])|[1.0,0.0,0.0]|
     //    |  5|         FR|   1.0|(3,[1],[1.0])|[0.0,1.0,0.0]|
     //    +---+-----------+------+-------------+-------------+
+
+
+
   }
 
 }
