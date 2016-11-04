@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-./activator test
+./scripts/sbt -jvm-opts .jvmopts test

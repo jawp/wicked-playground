@@ -1,11 +1,8 @@
-package howitworks.mllib
+package howitworks.ml
 
-
-import com.holdenkarau.spark.testing.SharedSparkContext
 import org.apache.spark.ml.feature.{StandardScalerModel, VectorAssembler}
-import org.apache.spark.sql.SQLContext
 
-class DataNormalization extends wp.Spec with SharedSparkContext {
+class DataNormalization extends wp.SparkySpec {
 
   //It's good practice to normalize dataset before training model
   // - normalize to have p-unit form (Normalizer)
@@ -19,7 +16,6 @@ class DataNormalization extends wp.Spec with SharedSparkContext {
     //A Normalizer users P-norm to normalize data
 
     //given ...
-    val sqlContext = new SQLContext(sc)
     import org.apache.spark.sql.functions._
 
     val df = sqlContext

@@ -5,9 +5,7 @@ import org.apache.spark.mllib.linalg.distributed.{CoordinateMatrix, IndexedRow, 
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
 
-import scalaz.syntax.id._
-
-class HelloMllib extends wp.Spec with SharedSparkContext {
+class HelloMllib extends wp.SparkySpec {
 
   //https://spark.apache.org/docs/latest/mllib-data-types.html
 
@@ -47,8 +45,6 @@ class HelloMllib extends wp.Spec with SharedSparkContext {
 
     v0.toString mustBe "[44.0,0.0,55.0]"
     v1.toString mustBe "(3,[0,2],[44.0,55.0])"
-
-
 
     //LabeledPoints - label is a double
     val lp0 = LabeledPoint(1.0, v0)

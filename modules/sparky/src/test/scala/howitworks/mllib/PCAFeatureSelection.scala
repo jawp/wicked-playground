@@ -1,5 +1,7 @@
 package howitworks.mllib
 
+import org.apache.spark.mllib
+import org.apache.spark.ml
 
 import com.holdenkarau.spark.testing.SharedSparkContext
 import org.apache.spark.ml.feature.VectorAssembler
@@ -8,9 +10,7 @@ import org.apache.spark.mllib.linalg.distributed.RowMatrix
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Row, SQLContext}
 
-import scalaz.syntax.id._
-
-class PCAFeatureSelection extends wp.Spec with SharedSparkContext {
+class PCAFeatureSelection extends wp.SparkySpec {
 
   //Principal Component Analysis
   //https://pl.wikipedia.org/wiki/Analiza_g%C5%82%C3%B3wnych_sk%C5%82adowych
@@ -36,10 +36,8 @@ class PCAFeatureSelection extends wp.Spec with SharedSparkContext {
   // Advice: Always scale and center predictors before PCA
   // how many PCs use?
 
-
   "it must work" in {
 
-    val sqlContext = new SQLContext(sc)
     import sqlContext.implicits._
 
     val crimes: DataFrame = sqlContext
@@ -54,9 +52,6 @@ class PCAFeatureSelection extends wp.Spec with SharedSparkContext {
 
 
     //since we don't want DataFrame but matrix, let's convert it
-    import org.apache.spark.mllib.linalg.{Vector => SVector}
-
-
     val assembler = new VectorAssembler()
       .setInputCols(crimes.columns)
       .setOutputCol("features")
@@ -65,12 +60,14 @@ class PCAFeatureSelection extends wp.Spec with SharedSparkContext {
 
     //featuresDF.show(10)
 
-
     val rddOfRows: RDD[Row] = featuresDF.rdd
-    val rddOfVectors: RDD[SVector] = rddOfRows.map(row => row.get(0).asInstanceOf[SVector])
+    val rddOfVectors: RDD[mllib.linalg.Vector] = rddOfRows
+      .map { row =>
+        val v = row.get(0).asInstanceOf[ml.linalg.Vector]
+        mllib.linalg.Vectors.fromML(v)
+      }
 
     val mat = new RowMatrix(rddOfVectors)
-
 
     //compute top 10 Principal Components
 

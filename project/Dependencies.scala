@@ -34,7 +34,7 @@ object Dependencies {
   val paradiseVersion = "2.1.0"
   val kindProjectorVersion = "0.6.3"
   val disciplineVersion = "0.7" //cats-kernel-laws introduces old version of discipline and scalacheck. watch out!
-  val databricsVersion = "1.5.0" //https://github.com/databricks/spark-csv
+  val databricksVersion = "1.5.0" //https://github.com/databricks/spark-csv
 
   val `akka-core` = "com.typesafe.akka" %% "akka-http-core" % akkaVersion
   val `akka-agent` = "com.typesafe.akka" %% "akka-agent" % akkaVersion
@@ -86,9 +86,11 @@ object Dependencies {
     "org.scalanlp" %% "breeze-viz" % breezeVersion
   }
   val spark = "org.apache.spark" %% "spark-core" % sparkVersion
+  val sparkSql = "org.apache.spark" %% "spark-sql" % sparkVersion
   val sparkCsv = "org.apache.spark" %% "spark-csv" % sparkVersion
-  val dataBricsCsv = "com.databricks" %% "spark-csv" % databricsVersion
+  val dataBricksCsv = "com.databricks" %% "spark-csv" % databricksVersion
   val mllib = "org.apache.spark" %% "spark-mllib" % sparkVersion
-
+  val mllibLocal = "org.apache.spark" %% "spark-mllib-local" % sparkVersion
+  val sparkHive = "org.apache.spark" %% "spark-hive" % sparkVersion
   val sparkTestingBase = "com.holdenkarau" %% "spark-testing-base" % sparkTestingBaseVersion
 }

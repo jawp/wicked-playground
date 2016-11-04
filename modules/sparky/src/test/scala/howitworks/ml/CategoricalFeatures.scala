@@ -1,25 +1,19 @@
-package howitworks.mllib
+package howitworks.ml
 
-
-import com.holdenkarau.spark.testing.SharedSparkContext
-import org.apache.spark.ml.Estimator
 import org.apache.spark.ml.feature.{IndexToString, OneHotEncoder, StringIndexer, StringIndexerModel}
-import org.apache.spark.sql.{Row, SQLContext}
+import org.apache.spark.sql.Row
 
-import scalaz.syntax.id._
-
-class CategoricalFeatures extends wp.Spec with SharedSparkContext {
+class CategoricalFeatures extends wp.SparkySpec {
 
   //Categorical data are  like gender: Male, Female
   // String to Number  -see> org.apache.spark.ml.feature.StringIndexer
 
-  "using StringIndexer & IndexToString & OneHotEncoder" ignore { //ignore because of Travis' java.io.NotSerializableException: org.scalatest.Assertions$AssertionsHelper
+  "using StringIndexer & IndexToString & OneHotEncoder" in { //ignore because of Travis' java.io.NotSerializableException: org.scalatest.Assertions$AssertionsHelper
 
     //to convert between String and Numbers
 
-    val sqlContext = new SQLContext(sc)
-    import sqlContext.implicits._
     import org.apache.spark.sql.functions._
+    import sqlContext.implicits._
 
     val df = sqlContext.createDataFrame(Seq(
       (0, "US"),
@@ -78,7 +72,7 @@ class CategoricalFeatures extends wp.Spec with SharedSparkContext {
     //    |  4|         US|   0.0|(2,[0],[1.0])|
     //    |  5|         FR|   1.0|(2,[1],[1.0])|
     //    +---+-----------+------+-------------+
-    import org.apache.spark.mllib.linalg._
+    import org.apache.spark.ml.linalg._
     encoded.foreach { (r: Row) =>
       val dv = r.getAs[SparseVector]("encoding").toDense
       println(s"${r(0)} ${r.getAs[String]("nationality")} $dv")
@@ -117,8 +111,6 @@ class CategoricalFeatures extends wp.Spec with SharedSparkContext {
     //    |  4|         US|   0.0|(3,[0],[1.0])|[1.0,0.0,0.0]|
     //    |  5|         FR|   1.0|(3,[1],[1.0])|[0.0,1.0,0.0]|
     //    +---+-----------+------+-------------+-------------+
-
-
 
   }
 

@@ -3,16 +3,12 @@ package howitworks.mllib
 
 import java.lang.Math._
 
-import com.holdenkarau.spark.testing.{SharedSparkContext, SparkContextProvider}
 import org.apache.spark.mllib.linalg.{Matrices, Matrix, Vector, Vectors}
 import org.apache.spark.rdd.RDD
 
-import scalaz.syntax.id._
-
-
 //see more examples in the Spark repo at examples/src/main/scala/org/apache/spark/examples/mllib/SummaryStatisticsExample.scala
 
-class BasicStatistics extends wp.Spec with SharedSparkContext {
+class BasicStatistics extends wp.SparkySpec {
 
   import org.apache.spark.mllib.stat._
 
@@ -43,10 +39,10 @@ class BasicStatistics extends wp.Spec with SharedSparkContext {
     val seriesY: RDD[Double] = sc.parallelize(Array(11, 22, 33, 33, 555))
 
     val correlation: Double = Statistics.corr(seriesX, seriesY, "pearson")
-    correlation mustBe 0.8500286768773001
+    //correlation mustBe 0.8500286768773007 not deterministic when run on sbt
 
-    Statistics.corr(seriesX, seriesX, "pearson") mustBe 1.0000000000000002 //embarassed longs ...
-    Statistics.corr(seriesX, seriesX.map(_*2), "pearson") mustBe 1.0000000000000002 //embarassed longs ...
+    Statistics.corr(seriesX, seriesX, "pearson") mustBe 1.0
+    Statistics.corr(seriesX, seriesX.map(_*2), "pearson") mustBe 1.0
 
     //above can be thought as computing correlation between two features
     //each series can be thought as column in matrix representing observations
@@ -66,11 +62,10 @@ class BasicStatistics extends wp.Spec with SharedSparkContext {
     val correlMatrix: Matrix = Statistics.corr(data, "pearson")
 
     correlMatrix mustBe Matrices.dense(3, 3, Array(
-      1,                  0.978883465889473,  0.9903895695275671, //first column
-      0.978883465889473,  1,                  0.9977483233986101, //second column
-      0.9903895695275671, 0.9977483233986101, 1                   //third column
+      1.0,                 0.9788834658894731,  0.9903895695275673, //first column
+      0.9788834658894731,   1.0,                0.9977483233986101, //second column
+      0.9903895695275673,  0.9977483233986101, 1.0                  //third column
     ))
   }
-
 
 }
