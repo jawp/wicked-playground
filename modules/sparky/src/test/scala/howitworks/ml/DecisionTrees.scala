@@ -83,11 +83,11 @@ class DecisionTrees extends wp.SparkySpec {
     val modelClassifier: PipelineModel = pipelineClass.fit(trainingData)
 
     //obtain dtC model
-    val treeModel = modelClassifier
+    val treeModelClassifier = modelClassifier
       .stages(2)  //dtC is at index 2
       .asInstanceOf[DecisionTreeClassificationModel]
 
-    println("Learned classification tree model:\n" + treeModel.toDebugString)
+    println("Learned classification tree model:\n" + treeModelClassifier.toDebugString)
 
     //this is how we can run predictions
     val predictions = modelClassifier.transform(testData)
@@ -104,6 +104,43 @@ class DecisionTrees extends wp.SparkySpec {
     val accuracy: Double = evaluator.evaluate(predictions)
 
     println("Test Error = " + (1.0 - accuracy))
+
+
+    // Decision Treee Regressor
+
+    import org.apache.spark.ml.regression.DecisionTreeRegressor
+    import org.apache.spark.ml.regression.DecisionTreeRegressionModel
+
+    val dtR = new DecisionTreeRegressor()
+      .setLabelCol("label")
+      .setFeaturesCol("indexedFeatures")
+
+    //Read scaladoc
+
+    //stopping criteria params
+    dtR.maxDepth
+    dtR.minInstancesPerNode
+    dtR.minInfoGain
+
+    //tuning parameters
+    dtR.maxBins
+    dtR.maxMemoryInMB
+    //dtR.subsamplingRate it's about fraction of training data used for learning, not in this version of spark
+    dtR.impurity
+
+
+    val pipelineReg = new Pipeline().setStages(Array(featureIndexer, dtR))
+
+    val modelRegressor = pipelineReg.fit(trainingData)
+    val treeModelReg = modelRegressor
+      .stages(1)
+      .asInstanceOf[DecisionTreeRegressionModel]
+
+    println("Learned regression tree model:\n" + treeModelReg.toDebugString)
+
+    val predictionsReg = modelRegressor.transform(testData)
+    //predictionsReg.show()
+
 
   }
 }
