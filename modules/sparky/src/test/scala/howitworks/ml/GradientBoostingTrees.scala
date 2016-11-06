@@ -33,7 +33,7 @@ class GradientBoostingTrees extends wp.SparkySpec {
     //validationTol -
 
     //read the scaladoc of:
-    val x: org.apache.spark.mllib.tree.configuration.BoostingStrategy = ???
+    var x: org.apache.spark.mllib.tree.configuration.BoostingStrategy = _
 
     //IOs - only one output, no probability
 
