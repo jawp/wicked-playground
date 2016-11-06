@@ -38,7 +38,7 @@ class CategoricalFeatures extends wp.SparkySpec {
     val model: StringIndexerModel = indexer.fit(df)
     val indexed = model.transform(df)
 
-    println(model.labels.toList)
+    //println(model.labels.toList)
     //    indexed.show()
     //and back
 
@@ -75,7 +75,7 @@ class CategoricalFeatures extends wp.SparkySpec {
     import org.apache.spark.ml.linalg._
     encoded.foreach { (r: Row) =>
       val dv = r.getAs[SparseVector]("encoding").toDense
-      println(s"${r(0)} ${r.getAs[String]("nationality")} $dv")
+      //println(s"${r(0)} ${r.getAs[String]("nationality")} $dv")
     }
 
     //hmm, not really what we needed ...
