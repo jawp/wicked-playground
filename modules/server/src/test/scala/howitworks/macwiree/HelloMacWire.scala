@@ -1,5 +1,7 @@
 package howitworks.macwiree
 
+import java.util.concurrent.atomic.AtomicInteger
+
 import com.softwaremill.macwire._
 
 class HelloMacWire extends wp.Spec {
@@ -35,6 +37,30 @@ class HelloMacWire extends wp.Spec {
     //UModule must be a class, it's not allowed to pass trait here
     val module = wire[UModule]
     module.usr.readStats mustBe "(1) Stats for Sarah Kerrigan: -> .... <stats>"
+  }
+
+  "singleton vs prototype" in {
+    val module = wire[UModule]
+    val c1 = module.nextCounter
+    val c2 = module.nextCounter
+    val c3 = module.globalCounter
+    val c4 = module.globalCounter
+
+    c1.next() mustBe 1
+    c1.next() mustBe 2
+    c1.next() mustBe 3
+
+    c2.next() mustBe 1
+    c2.next() mustBe 2
+    c2.next() mustBe 3
+
+    c3.next() mustBe 1
+    c3.next() mustBe 2
+    c3.next() mustBe 3
+    c4.next() mustBe 4
+    c4.next() mustBe 5
+    c4.next() mustBe 6
+
   }
 }
 
@@ -82,6 +108,11 @@ class UserStatsReader(uf: UserFinder) {
   }
 }
 
+class Counter {
+  val c = new AtomicInteger(1)
+  def next(): Int = c.getAndIncrement()
+}
+
 trait UserModule {
   import Types._
 
@@ -90,6 +121,8 @@ trait UserModule {
   lazy val sf = wire[SecurityFilter]
   lazy val uf = wire[UserFinder]
   lazy val usr = wire[UserStatsReader]
+  def nextCounter = wire[Counter]
+  val globalCounter = wire[Counter]
 }
 
 @Module
