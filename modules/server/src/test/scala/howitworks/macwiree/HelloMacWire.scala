@@ -4,7 +4,7 @@ class HelloMacWire extends wp.Spec {
 
   "let it wire" in {
     val module = new UserModule {}
-    module.usr.readStats mustBe "Stats for Sarah Kerrigan: -> .... <stats>"
+    module.usr.readStats mustBe "(1) Stats for Sarah Kerrigan: -> .... <stats>"
   }
 
   "let it override wires" in {
@@ -14,9 +14,20 @@ class HelloMacWire extends wp.Spec {
         override def getUserFromDB(id: Id): Option[(Id, Name, Surname)] = Some((1L, "Infested", "Kerrigan"))
       }
     }
-    module.usr.readStats mustBe "Stats for Infested Kerrigan: -> .... <stats>"
+    module.usr.readStats mustBe "(1) Stats for Infested Kerrigan: -> .... <stats>"
+    module.usr.readStats mustBe "(2) Stats for Infested Kerrigan: -> .... <stats>"
   }
 
+  "many module instances" in {
+    val m1 = new UserModule {}
+    val m2 = new UserModule {}
+    m1.usr.readStats mustBe "(1) Stats for Sarah Kerrigan: -> .... <stats>"
+    m1.usr.readStats mustBe "(2) Stats for Sarah Kerrigan: -> .... <stats>"
+    m1.usr.readStats mustBe "(3) Stats for Sarah Kerrigan: -> .... <stats>"
+
+    m2.usr.readStats mustBe "(1) Stats for Sarah Kerrigan: -> .... <stats>"
+    // So m1 and m2 have their own instances ...
+  }
 
 }
 
@@ -53,10 +64,15 @@ class UserFinder(da: DatabaseAccess, sf: SecurityFilter) {
 }
 
 class UserStatsReader(uf: UserFinder) {
+  var counter: Int = 0
   def readStats: String = {
     uf.findUser() match {
-      case Some ((id, name, surname)) => s"Stats for $name $surname: -> .... <stats>"
-      case None => s"Sorry, user classified or not found"
+      case Some ((id, name, surname)) =>
+        counter = counter + 1
+        s"($counter) Stats for $name $surname: -> .... <stats>"
+      case None =>
+        counter = counter + 1
+        s"Sorry, user classified or not found"
     }
   }
 }
