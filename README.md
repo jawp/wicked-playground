@@ -9,7 +9,7 @@ Here I test some snippets from various tutorials, howtos and documentations tryi
 
 Run:
 
-    ./activator ~reRstart
+    ./sbt.sh '~reRstart'
 
 ... and open a browser at http://localhost:8080/
 

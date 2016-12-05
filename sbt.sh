@@ -1,1 +1,1 @@
-./scripts/sbt -jvm-opts .jvmopts @$
+./scripts/sbt -jvm-opts .jvmopts $@
