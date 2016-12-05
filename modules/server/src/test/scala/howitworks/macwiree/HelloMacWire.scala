@@ -62,6 +62,9 @@ class HelloMacWire extends wp.Spec {
     c4.next() mustBe 6
 
   }
+  "wire set" in {
+    wire[UModule].figure.wheels.map(_.radius).toList mustBe List(11, 22, 33)
+  }
 }
 
 
@@ -113,6 +116,10 @@ class Counter {
   def next(): Int = c.getAndIncrement()
 }
 
+case class Wheel(radius: Double)
+
+class Figure(val wheels: Set[Wheel])
+
 trait UserModule {
   import Types._
 
@@ -123,6 +130,13 @@ trait UserModule {
   lazy val usr = wire[UserStatsReader]
   def nextCounter = wire[Counter]
   val globalCounter = wire[Counter]
+
+  lazy val w1 = new Wheel(11)
+  lazy val w2 = new Wheel(22)
+  lazy val w3 = new Wheel(33)
+  lazy val wheels = wireSet[Wheel]
+  lazy val figure = wire[Figure]
+
 }
 
 @Module
