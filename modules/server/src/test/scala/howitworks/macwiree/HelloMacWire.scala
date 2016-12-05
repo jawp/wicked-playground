@@ -1,5 +1,7 @@
 package howitworks.macwiree
 
+import com.softwaremill.macwire._
+
 class HelloMacWire extends wp.Spec {
 
   "let it wire" in {
@@ -29,6 +31,11 @@ class HelloMacWire extends wp.Spec {
     // So m1 and m2 have their own instances ...
   }
 
+  "@Module" in {
+    //UModule must be a class, it's not allowed to pass trait here
+    val module = wire[UModule]
+    module.usr.readStats mustBe "(1) Stats for Sarah Kerrigan: -> .... <stats>"
+  }
 }
 
 
@@ -77,7 +84,6 @@ class UserStatsReader(uf: UserFinder) {
 
 trait UserModule {
   import Types._
-  import com.softwaremill.macwire._
 
   lazy val da = wire[DatabaseAccess]
   lazy val classified: List[Id] = List(2)
@@ -85,3 +91,6 @@ trait UserModule {
   lazy val uf = wire[UserFinder]
   lazy val usr = wire[UserStatsReader]
 }
+
+@Module
+class UModule extends UserModule
