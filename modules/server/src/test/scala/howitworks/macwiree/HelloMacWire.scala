@@ -213,6 +213,7 @@ class DadModule {
 
 @Module
 class ChildModule(mum: MumModule, dad: DadModule) {
+  //no need to import mum and dad
   lazy val douther = wire[Douther]
   lazy val son = wire[Son]
 }
