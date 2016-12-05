@@ -94,7 +94,7 @@ class HelloMacWire extends wp.Spec {
 
     lazy val m = wire[ChildModule]
 
-    m.douther
+    m.daughter
     m.son
   }
 }
@@ -197,7 +197,7 @@ object Family {
 }
 import Family._
 
-class Douther(surname: String @@ Surname, eyesColor: Int @@ Color, food: Int @@ Food)
+class Daughter(surname: String @@ Surname, eyesColor: Int @@ Color, food: Int @@ Food)
 class Son(surname: String @@ Surname, food: Int @@ Food)
 
 @Module
@@ -214,6 +214,6 @@ class DadModule {
 @Module
 class ChildModule(mum: MumModule, dad: DadModule) {
   //no need to import mum and dad
-  lazy val douther = wire[Douther]
+  lazy val daughter = wire[Daughter]
   lazy val son = wire[Son]
 }
