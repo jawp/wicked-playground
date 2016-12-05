@@ -34,6 +34,17 @@ class HelloMacWire extends wp.Spec {
     // So m1 and m2 have their own instances ...
   }
 
+  "many module instances - @Module" in {
+    val m1 = wire[UModule]
+    val m2 = wire[UModule]
+    m1.usr.readStats mustBe "(1) Stats for Sarah Kerrigan: -> .... <stats>"
+    m1.usr.readStats mustBe "(2) Stats for Sarah Kerrigan: -> .... <stats>"
+    m1.usr.readStats mustBe "(3) Stats for Sarah Kerrigan: -> .... <stats>"
+
+    m2.usr.readStats mustBe "(1) Stats for Sarah Kerrigan: -> .... <stats>"
+    // So m1 and m2 have their own instances ...
+  }
+
   "@Module" in {
     //UModule must be a class, it's not allowed to pass trait here
     val module = wire[UModule]
@@ -69,6 +80,11 @@ class HelloMacWire extends wp.Spec {
 
   "tagging" in {
     wire[UModule].wrappedInt.i mustBe 0
+  }
+
+  "many wirings int the module" in {
+    val m = wire[UModule]
+
   }
 }
 
@@ -147,7 +163,13 @@ trait UserModule {
 
   val wrappedInt = wire[WrappedInt]
 
+  lazy val d0 = 0.1
+
+  lazy val doubleVar0 = wire[DoubleVar]
+  lazy val doubleVar1 = wire[DoubleVar]
 }
+
+class DoubleVar(var d: Double)
 
 trait I0
 class WrappedInt(val i: Int @@ I0)
