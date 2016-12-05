@@ -49,10 +49,8 @@ class DatabaseAccess() {
   def getUserFromDB(id: Id): Option[(Id, Name, Surname)] = persons.get(id)
 }
 
-class SecurityFilter() {
-  import Types._
-  private val classified: List[Id] = List(2)
-  def isClassified(id: Id): Boolean = classified.contains(id)
+class SecurityFilter(classified: List[Types.Id]) {
+  def isClassified(id: Types.Id): Boolean = classified.contains(id)
 }
 
 class UserFinder(da: DatabaseAccess, sf: SecurityFilter) {
@@ -78,9 +76,11 @@ class UserStatsReader(uf: UserFinder) {
 }
 
 trait UserModule {
+  import Types._
   import com.softwaremill.macwire._
 
   lazy val da = wire[DatabaseAccess]
+  lazy val classified: List[Id] = List(2)
   lazy val sf = wire[SecurityFilter]
   lazy val uf = wire[UserFinder]
   lazy val usr = wire[UserStatsReader]
