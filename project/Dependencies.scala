@@ -35,6 +35,7 @@ object Dependencies {
   val kindProjectorVersion = "0.6.3"
   val disciplineVersion = "0.7" //cats-kernel-laws introduces old version of discipline and scalacheck. watch out!
   val databricksVersion = "1.5.0" //https://github.com/databricks/spark-csv
+  val macWireVersion = "2.2.5"
 
   val `akka-core` = "com.typesafe.akka" %% "akka-http-core" % akkaVersion
   val `akka-agent` = "com.typesafe.akka" %% "akka-agent" % akkaVersion
@@ -93,4 +94,11 @@ object Dependencies {
   val mllibLocal = "org.apache.spark" %% "spark-mllib-local" % sparkVersion
   val sparkHive = "org.apache.spark" %% "spark-hive" % sparkVersion
   val sparkTestingBase = "com.holdenkarau" %% "spark-testing-base" % sparkTestingBaseVersion
+
+  // https://mvnrepository.com/artifact/com.softwaremill.macwire/macros_2.12
+  val macwireMacros = "com.softwaremill.macwire" %% "macros" % macWireVersion  % "provided"
+  val macwireUtil = "com.softwaremill.macwire" %% "util" % macWireVersion
+  val macwireProxy = "com.softwaremill.macwire" %% "proxy" % macWireVersion
+
+
 }

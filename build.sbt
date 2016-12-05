@@ -29,7 +29,10 @@ lazy val server = project.in(file("modules/server"))
     spireMath,
     resetAllAttrs,
     paradiseCompilerPlugin,
-    kindProjectorCompilerPlugin
+    kindProjectorCompilerPlugin,
+    macwireMacros,
+    macwireUtil,
+    macwireProxy
   ))
   .settings((resourceGenerators in Compile) <+=
     (fastOptJS in Compile in frontend,
