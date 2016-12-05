@@ -86,6 +86,17 @@ class HelloMacWire extends wp.Spec {
     val m = wire[UModule]
 
   }
+
+  "combining modules" in {
+      //below must be provided before wiring ChildModule
+    lazy val mum = wire[MumModule]
+    lazy val dad = wire[DadModule]
+
+    lazy val m = wire[ChildModule]
+
+    m.douther
+    m.son
+  }
 }
 
 
@@ -115,7 +126,7 @@ class UserFinder(da: DatabaseAccess, sf: SecurityFilter) {
 
   val particularUser:Id = 1L
 
-  def findUser(): Option[(Id, Name, Surname)] = if(sf.isClassified(particularUser)) None else da.getUserFromDB(particularUser)
+  def findUser(): Option[(Id, Surname, Surname)] = if(sf.isClassified(particularUser)) None else da.getUserFromDB(particularUser)
 }
 
 class UserStatsReader(uf: UserFinder) {
@@ -176,3 +187,32 @@ class WrappedInt(val i: Int @@ I0)
 
 @Module
 class UModule extends UserModule
+
+
+//
+object Family {
+  trait Food
+  trait Surname
+  trait Color
+}
+import Family._
+
+class Douther(surname: String @@ Surname, eyesColor: Int @@ Color, food: Int @@ Food)
+class Son(surname: String @@ Surname, food: Int @@ Food)
+
+@Module
+class MumModule {
+  lazy val food = 123.taggedWith[Food]
+  lazy val eyesColor = 334476.taggedWith[Color]
+}
+
+@Module
+class DadModule {
+  lazy val surname = "Kowalsky".taggedWith[Surname]
+}
+
+@Module
+class ChildModule(mum: MumModule, dad: DadModule) {
+  lazy val douther = wire[Douther]
+  lazy val son = wire[Son]
+}
