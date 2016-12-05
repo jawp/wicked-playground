@@ -3,6 +3,7 @@ package howitworks.macwiree
 import java.util.concurrent.atomic.AtomicInteger
 
 import com.softwaremill.macwire._
+import com.softwaremill.tagging._
 
 class HelloMacWire extends wp.Spec {
 
@@ -64,6 +65,10 @@ class HelloMacWire extends wp.Spec {
   }
   "wire set" in {
     wire[UModule].figure.wheels.map(_.radius).toList mustBe List(11, 22, 33)
+  }
+
+  "tagging" in {
+    wire[UModule].wrappedInt.i mustBe 0
   }
 }
 
@@ -137,7 +142,15 @@ trait UserModule {
   lazy val wheels = wireSet[Wheel]
   lazy val figure = wire[Figure]
 
+  lazy val i0 = 0.taggedWith[I0]
+  lazy val i1 = 1
+
+  val wrappedInt = wire[WrappedInt]
+
 }
+
+trait I0
+class WrappedInt(val i: Int @@ I0)
 
 @Module
 class UModule extends UserModule
