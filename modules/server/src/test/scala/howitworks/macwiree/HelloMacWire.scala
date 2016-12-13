@@ -97,6 +97,17 @@ class HelloMacWire extends wp.Spec {
     m.daughter
     m.son
   }
+
+  "combining modules in function" in {
+    def mkDaughter(module: MumModule, dad: DadModule): Daughter = {
+      wire[Daughter]
+    }
+    lazy val mum = wire[MumModule]
+    lazy val dad = wire[DadModule]
+
+    val d = mkDaughter(mum, dad)
+
+  }
 }
 
 
