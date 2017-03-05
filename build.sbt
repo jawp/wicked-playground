@@ -6,7 +6,7 @@ import spray.revolver.RevolverPlugin._
 
 lazy val root = project.in(file("."))
   .settings(Common.settings)
-  .aggregate(sharedJs, sharedJvm, server, frontend, clapi, sparky)
+  .aggregate(sharedJs, sharedJvm, server, frontend, clapi)
 
 lazy val server = project.in(file("modules/server"))
   .settings(Revolver.settings: _*)
@@ -100,27 +100,3 @@ lazy val clapi = project.in(file("modules/clapi"))
   ))
   .dependsOn(sharedJvmCp)
 
-
-lazy val sparky = project.in(file("modules/sparky"))
-  .settings(Common.settings)
-  .settings(
-    //as advised in https://github.com/holdenk/spark-testing-base#minimum-memory-requirements-and-ooms
-    javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled"),
-    parallelExecution in Test := false
-  )
-  .settings(libraryDependencies ++= Seq(
-    //spark is so big in terms of dependency - it's better
-    //not to put here anything in order to avoid binary compatibility issues
-    //
-    //scalazCore, scalazEffect, scalazConcurrent, scalazEffect,
-    //spireMath,
-    //breeze, breezeViz, breezeNatives,
-    spark,
-    sparkSql,
-    mllib,
-    mllibLocal,
-    dataBricksCsv,
-    scalaTest % Test,
-    sparkHive % Test,   //otherwise if not included there are some dependency errors
-    sparkTestingBase % Test
-  )).dependsOn(sharedJvmCp)
