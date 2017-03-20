@@ -14,16 +14,21 @@ object Dependencies {
   val playScalaJsScriptsVersion = "0.4.0"
   val slickVersion = "3.1.1"
   val playSlickVersion = "2.0.0"
+
   val uPicleVersion = "0.4.2"
   val webJarsPlayVersion = "2.5.0"
   val bootstrapVersion = "3.3.6"
   val webJarsJQueryVersion = "2.2.2"
   val webJarsFontAwesomeVersion = "4.5.0"
-  val scalajsDomVersion = "0.9.0"
+
+  val scalajsDomVersion = "0.9.1"
   val scalaTagsVersion = "0.6.0" //https://repo1.maven.org/maven2/com/lihaoyi/scalatags_sjs0.6_2.11/
   val scalaRxVersion = "0.3.1"
   val uTestVersion = "0.4.3"
   val doeraeneScalajsJQueryVersion = "0.9.0"
+  val scalaJsReactVersion = "0.11.3"
+  val reactVersion  = "15.3.2"
+
   val breezeVersion = "0.12"
   val spireVersion = "0.11.0"
   val sparkVersion = "2.0.1"
