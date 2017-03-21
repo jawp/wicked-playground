@@ -1,4 +1,4 @@
-name := """wicked-playground"""
+name := """wicked-playground-xxx"""
 
 import Dependencies._
 import org.scalajs.sbtplugin.cross.CrossProject
@@ -38,7 +38,7 @@ lazy val server = project.in(file("modules/server"))
     (fastOptJS in Compile in frontend,
       packageScalaJSLauncher in Compile in frontend)
       .map((f1, f2) => Seq(f1.data, f2.data)),
-    watchSources <++= (watchSources in frontend))
+    watchSources <++= (watchSources in frontend)) //TODO watchSources ++= (watchSources in frontend).value)
   .dependsOn(sharedJvmCp)
 
 lazy val frontend = project.in(file("modules/frontend"))
@@ -49,17 +49,34 @@ lazy val frontend = project.in(file("modules/frontend"))
     "com.lihaoyi" %%% "scalarx" % scalaRxVersion,
     "be.doeraene" %%% "scalajs-jquery" % doeraeneScalajsJQueryVersion,
     "org.scala-js" %%% "scalajs-dom" % scalajsDomVersion,
-    scalaTest % Test,
-    "com.lihaoyi" %%% "utest" % uTestVersion
+    "org.scalatest" %%% "scalatest" % scalatestVersion % Test,
+    "com.lihaoyi" %%% "utest" % uTestVersion,
+    "com.github.japgolly.scalajs-react" %%% "core" % scalaJsReactVersion
+  ))
+  .settings(jsDependencies ++= Seq(
+    RuntimeDOM,
+    "org.webjars.bower" % "react" % reactVersion
+      /        "react-with-addons.js"
+      minified "react-with-addons.min.js"
+      commonJSName "React",
+
+    "org.webjars.bower" % "react"  % reactVersion
+      /         "react-dom.js"
+      minified  "react-dom.min.js"
+      dependsOn "react-with-addons.js"
+      commonJSName "ReactDOM",
+
+    "org.webjars.bower" % "react" % reactVersion
+      /         "react-dom-server.js"
+      minified  "react-dom-server.min.js"
+      dependsOn "react-dom.js"
+      commonJSName "ReactDOMServer"
   ))
   .settings(
     persistLauncher in Compile := true,
     persistLauncher in Test := false,
     mainClass in Compile := Some("wp.PigeonsApp"),
     testFrameworks += new TestFramework("utest.runner.Framework"),
-    jsDependencies += RuntimeDOM
-//    ,scalaJSUseRhino in Global := false
-    ,
     testOptions in Test := Common.replaceSpanFactor(testOptions.value)
   )
   .dependsOn(sharedJsCp)
