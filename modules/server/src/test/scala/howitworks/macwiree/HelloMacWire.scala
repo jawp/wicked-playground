@@ -14,7 +14,9 @@ class HelloMacWire extends wp.Spec {
 
   "let it override wires" in {
     val module = new UserModule {
+
       import Types._
+
       override lazy val da: DatabaseAccess = new DatabaseAccess {
         override def getUserFromDB(id: Id): Option[(Id, Name, Surname)] = Some((1L, "Infested", "Kerrigan"))
       }
@@ -88,7 +90,7 @@ class HelloMacWire extends wp.Spec {
   }
 
   "combining modules" in {
-      //below must be provided before wiring ChildModule
+    //below must be provided before wiring ChildModule
     lazy val mum = wire[MumModule]
     lazy val dad = wire[DadModule]
 
@@ -108,6 +110,25 @@ class HelloMacWire extends wp.Spec {
     val d = mkDaughter(mum, dad)
 
   }
+
+  "wiring function" in {
+
+    class Test(calcWorldPos: (Int, Int) => (Double, Double)) {
+      val pos = calcWorldPos(10, 200)
+    }
+
+    object PosConversion {
+      def screenToWorldPos(x: Int, y: Int): (Double, Double) = (0.0, 0.0)
+    }
+
+
+    val t = new Test(PosConversion.screenToWorldPos)
+
+    val f: (Int, Int) => (Double, Double) = PosConversion.screenToWorldPos
+    val tWired = wire[Test]
+    tWired.pos mustBe (0.0, 0.0)
+  }
+
 }
 
 
@@ -116,7 +137,9 @@ object Types {
   type Name = String
   type Surname = String
 }
+
 class DatabaseAccess() {
+
   import Types._
 
   private var persons: Map[Id, (Id, Name, Surname)] = Map[Id, (Id, Name, Surname)](
@@ -133,18 +156,20 @@ class SecurityFilter(classified: List[Types.Id]) {
 }
 
 class UserFinder(da: DatabaseAccess, sf: SecurityFilter) {
+
   import Types._
 
-  val particularUser:Id = 1L
+  val particularUser: Id = 1L
 
-  def findUser(): Option[(Id, Surname, Surname)] = if(sf.isClassified(particularUser)) None else da.getUserFromDB(particularUser)
+  def findUser(): Option[(Id, Surname, Surname)] = if (sf.isClassified(particularUser)) None else da.getUserFromDB(particularUser)
 }
 
 class UserStatsReader(uf: UserFinder) {
   var counter: Int = 0
+
   def readStats: String = {
     uf.findUser() match {
-      case Some ((id, name, surname)) =>
+      case Some((id, name, surname)) =>
         counter = counter + 1
         s"($counter) Stats for $name $surname: -> .... <stats>"
       case None =>
@@ -156,6 +181,7 @@ class UserStatsReader(uf: UserFinder) {
 
 class Counter {
   val c = new AtomicInteger(1)
+
   def next(): Int = c.getAndIncrement()
 }
 
@@ -164,6 +190,7 @@ case class Wheel(radius: Double)
 class Figure(val wheels: Set[Wheel])
 
 trait UserModule {
+
   import Types._
 
   lazy val da = wire[DatabaseAccess]
@@ -171,7 +198,9 @@ trait UserModule {
   lazy val sf = wire[SecurityFilter]
   lazy val uf = wire[UserFinder]
   lazy val usr = wire[UserStatsReader]
+
   def nextCounter = wire[Counter]
+
   val globalCounter = wire[Counter]
 
   lazy val w1 = new Wheel(11)
@@ -194,6 +223,7 @@ trait UserModule {
 class DoubleVar(var d: Double)
 
 trait I0
+
 class WrappedInt(val i: Int @@ I0)
 
 @Module
@@ -202,13 +232,19 @@ class UModule extends UserModule
 
 //
 object Family {
+
   trait Food
+
   trait Surname
+
   trait Color
+
 }
+
 import Family._
 
 class Daughter(surname: String @@ Surname, eyesColor: Int @@ Color, food: Int @@ Food)
+
 class Son(surname: String @@ Surname, food: Int @@ Food)
 
 @Module
