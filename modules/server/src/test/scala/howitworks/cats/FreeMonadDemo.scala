@@ -1,7 +1,7 @@
 package howitworks.cats
 
+import cats.Monad
 import cats.free.Free
-import cats.{Monad, RecursiveTailRecM}
 
 object FreeMonadDemo {
 
@@ -21,7 +21,7 @@ object FreeMonadDemo {
   */
 class FreeMonadDemo extends wp.Spec {
 
-  "ubiquitous tutorial" in {
+  "ubiquitous tutorial" ignore {
     //based on Composable application architecture with reasonably priced monads
     //https://www.youtube.com/watch?v=M258zVn4m2M
 
@@ -59,6 +59,7 @@ class FreeMonadDemo extends wp.Spec {
     //First we need the NaturalTransformation which simply represents the function of type F[_] => G[_]
     //Note that Id has the shape op G[_] and is often chosen here
     import cats.{Id, ~>}
+    import cats.syntax.all
 
     //This is the one possible interpreter of programs
     object ConsoleInterpreter extends (Interaction ~> Id) {
@@ -104,11 +105,12 @@ class FreeMonadDemo extends wp.Spec {
       override def pure[A](a: A): Tester[A] = _ => (List(), a)
 
       //hmm, WTF ???
-      override def tailRecM[A, B](a: A)(f: (A) => Tester[Either[A, B]]): Tester[B] = defaultTailRecM(a)(f)
+//      override def tailRecM[A, B](a: A)(f: (A) => Tester[Either[A, B]]): Tester[B] = defaultTailRecM(a)(f)
+      override def tailRecM[A, B](a: A)(f: (A) => Tester[Either[A, B]]): Tester[B] = ???
     }
 
     //WTF ???
-    implicit val recursiveTailRecMTester: RecursiveTailRecM[Tester] = RecursiveTailRecM.create[Tester]
+//    implicit val recursiveTailRecMTester: RecursiveTailRecM[Tester] = RecursiveTailRecM.create[Tester]
 
     //And this is you you can run the prog using created Test interpreter
     //As you can see this interpreter given the program will produce the Tester function.
@@ -151,10 +153,11 @@ class FreeMonadDemo extends wp.Spec {
       }
 
       override def pure[A](x: A): (List[String], A) = (Nil, x)
-      override def tailRecM[A, B](a: A)(f: (A) => (List[String], Either[A, B])): (List[String], B) = defaultTailRecM(a)(f)
+//      override def tailRecM[A, B](a: A)(f: (A) => (List[String], Either[A, B])): (List[String], B) = defaultTailRecM(a)(f)
+      override def tailRecM[A, B](a: A)(f: (A) => (List[String], Either[A, B])): (List[String], B) = ???
     }
 
-    implicit val recursiveTailRecMPrint: RecursiveTailRecM[Print] = RecursiveTailRecM.create[Print]
+//    implicit val recursiveTailRecMPrint: RecursiveTailRecM[Print] = RecursiveTailRecM.create[Print]
 
     //let's run the pro using PrintInterpreter:
 

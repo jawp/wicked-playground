@@ -7,7 +7,7 @@ object Common {
 
   val settings: Seq[Def.Setting[_]] = Seq(
     version := appVersion,
-    scalaVersion := "2.11.8",
+    scalaVersion := "2.12.1",
     organization := "jawp",
     scalacOptions ++= Seq(
       //based on http://blog.threatstack.com/useful-scalac-options-for-better-scala-development-part-1

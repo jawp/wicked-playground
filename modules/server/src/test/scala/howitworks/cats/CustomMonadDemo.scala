@@ -25,7 +25,11 @@ class CustomMonadDemo extends wp.Discipline {
         (list1 ++ list2, a2)
       }
       override def pure[A](x: A): FUN[A] = m => (Nil, x)
-      override def tailRecM[A, B](a: A)(f: (A) => FUN[Either[A, B]]): FUN[B] = defaultTailRecM(a)(f)
+
+      //old implementation
+      //override def tailRecM[A, B](a: A)(f: (A) => FUN[Either[A, B]]): FUN[B] = defaultTailRecM(a)(f)
+      //@scala.annotation.tailrec
+      override def tailRecM[A, B](a: A)(f: (A) => FUN[Either[A, B]]): FUN[B] = ???
     }
   }
 
@@ -51,7 +55,7 @@ class CustomMonadDemo extends wp.Discipline {
   }
 
   //here we run rule set. This will register tests in scalatest
-  //TODO: uncomment, when new cat's will be released (now we experience binary compatibility cats-laws and scalacheck problems
+  //TODO: uncomment after implementinc tailRecM
 //  checkAll("int", FunMonadRuleSet.ruleSet)
 //  the same as above, but using only scalacheck
 //  FunMonadRuleSet.ruleSet.all.check

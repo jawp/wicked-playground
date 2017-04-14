@@ -7,7 +7,7 @@ import wp.textareastats.TextAreaStats
 import scala.concurrent.duration._
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.scalajs.js.annotation.JSExport
-
+import scala.scalajs.js
 
 @JSExport
 object PigeonsApp {
@@ -25,7 +25,8 @@ object PigeonsApp {
         dom.window.location.reload(true)
       case result =>
         savedServerVersion = savedServerVersion.orElse(result.toOption)
-        dom.window.setTimeout(checkRefresh _, 1000)
+        val f: Function0[Any] = checkRefresh
+        dom.window.setTimeout(f, 1000)
     }
   }
 

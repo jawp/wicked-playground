@@ -1,6 +1,6 @@
 package howitworks.cats
 
-import cats.data.{OptionT, Xor}
+import cats.data.OptionT
 import org.scalatest.time.{Millis, Seconds, Span}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -155,17 +155,17 @@ class TransformersDemo extends wp.Spec {
       }
     }
 
-    def getBackupEmail(userId: UserId): Future[Xor[Error, Option[Email]]] = Future{
+    def getBackupEmail(userId: UserId): Future[Either[Error, Option[Email]]] = Future{
       if(!database.userIds.contains(userId))
-        Xor.Left(s"No such userId $userId")
+        Left(s"No such userId $userId")
       else
-        Xor.right(database.backupEmails.get(userId))
+        Right(database.backupEmails.get(userId))
     }
 
-    def resetPassword(userId: UserId): Future[Xor[Error, Password]] = Future{
+    def resetPassword(userId: UserId): Future[Either[Error, Password]] = Future{
       if(!database.userIds.contains(userId))
-        Xor.left(s"No such userId $userId")
-      else Xor.right(database.resetPassword(userId))
+        Left(s"No such userId $userId")
+      else Right(database.resetPassword(userId))
     }
 
     def sendEmailWithPasswordResetLink(email: Email, userId: UserId, password: String) = Future {

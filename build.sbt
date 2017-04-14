@@ -13,21 +13,18 @@ lazy val server = project.in(file("modules/server"))
   .settings(mainClass in Revolver.reStart := Some("wp.ServerMain"))
   .settings(Common.settings)
   .settings(libraryDependencies ++= Seq(
-    `akka-http-experimental`,
-    `akka-agent`,
-    `akka-slf4j`,
+    `akka-actor`, `akka-stream`, `akka-slf4j`, `akka-agent`,
+    `akka-http`, `akka-http-testkit`,
     `logback-classick`,
     `json4s-jackson`,
     `json4s-ext`,
     upicle,
-    `akka-http-circe`,
     scalaTest % Test,
     scalarx,
     scalatags,
     cats, // exclude("org.scalacheck", "scalacheck_2.11" /*1.12.5*/),
     scalazCore, scalazEffect, scalazConcurrent, scalazEffect,
     spireMath,
-    resetAllAttrs,
     paradiseCompilerPlugin,
     kindProjectorCompilerPlugin,
     macwireMacros,
