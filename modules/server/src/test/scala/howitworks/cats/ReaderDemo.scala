@@ -1,6 +1,7 @@
 package howitworks.cats
 
-import cats.data.Reader
+import cats.Id
+import cats.data.{Reader, ReaderT}
 
 
 class ReaderDemo extends wp.Spec {
@@ -50,5 +51,10 @@ class ReaderDemo extends wp.Spec {
     //and if you're interested in unwrapped function:
     val stringAnalysis2Fun = stringAnalysis2.run
     stringAnalysis2Fun(exampleIn) mustBe expectedOut
+
+    //Let's obtain Monad for reader
+    def m[A] = implicitly[cats.Monad[ReaderT[Id, A, ?]]]
+    m[String]
+
   }
 }
