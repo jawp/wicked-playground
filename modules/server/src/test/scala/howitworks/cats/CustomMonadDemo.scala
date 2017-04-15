@@ -26,10 +26,18 @@ class CustomMonadDemo extends wp.Discipline {
       }
       override def pure[A](x: A): FUN[A] = m => (Nil, x)
 
-      //old implementation
-      //override def tailRecM[A, B](a: A)(f: (A) => FUN[Either[A, B]]): FUN[B] = defaultTailRecM(a)(f)
-      //@scala.annotation.tailrec
-      override def tailRecM[A, B](a: A)(f: (A) => FUN[Either[A, B]]): FUN[B] = ???
+      override def tailRecM[A, B](a: A)(f: (A) => FUN[Either[A, B]]): FUN[B] = (m: Map[String, String]) => {
+        val fa: FUN[Either[A, B]] = f(a)
+        val (list, e): (List[String], Either[A, B]) = fa(m)
+        @scala.annotation.tailrec
+        def go(l: List[String], e: Either[A,B]): (List[String], B) = e match{
+          case Right(b) => (l, b)
+          case Left(a1) =>
+            val (l1, e1) = f(a1)(m)
+            go(l ++ l1, e1)
+        }
+        go(list, e)
+      }
     }
   }
 
@@ -56,7 +64,7 @@ class CustomMonadDemo extends wp.Discipline {
 
   //here we run rule set. This will register tests in scalatest
   //TODO: uncomment after implementinc tailRecM
-//  checkAll("int", FunMonadRuleSet.ruleSet)
+  checkAll("int", FunMonadRuleSet.ruleSet)
 //  the same as above, but using only scalacheck
 //  FunMonadRuleSet.ruleSet.all.check
 }
