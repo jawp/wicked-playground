@@ -41,7 +41,14 @@ class ReaderDemo extends wp.Spec {
       distFormatted = dist.toList.sortBy(x => (x._1.toUpper, x._1)).mkString(", ")
     } yield s"The string '$input' contains $size letters, $ovalCount oval letters and in general here this is distribution of letters: $distFormatted"
 
+    //running
     stringAnalysis2.run(exampleIn) mustBe expectedOut
 
+    //or even simler (apply deletagets to run)
+    stringAnalysis2(exampleIn) mustBe expectedOut
+
+    //and if you're interested in unwrapped function:
+    val stringAnalysis2Fun = stringAnalysis2.run
+    stringAnalysis2Fun(exampleIn) mustBe expectedOut
   }
 }
