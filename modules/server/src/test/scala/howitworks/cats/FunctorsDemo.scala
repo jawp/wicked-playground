@@ -34,7 +34,7 @@ class FunctorsDemo extends wp.Spec {
 
       Functor[List].map(List(1, 2, 3))(_ + 1) mustBe List(2, 3, 4)
 
-      //there is no standard functor instance for Set - this i why below doesn't compile
+      //there is no standard functor instance for Set - this is why below doesn't compile
       //      type S[X] = Set[List[X]]
       //      implicit val sFunctor = Functor[Set] compose Functor[List]
       //      Functor[S].map(Set(List(1,2,3), Nil, List(10,10, 10)))(_.map(_ + 1)) mustBe Set(List(1,2,3), Nil, List(10,10, 10))
